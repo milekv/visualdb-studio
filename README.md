@@ -7,7 +7,7 @@ Projekt powstał jako portfolio project pokazujący umiejętności z zakresu baz
 
 ## Live demo
 
-https://dataflow-visual-data-vq81.bolt.host
+[Strona projektu](https://dataflow.bolt.host/)
 
 ## Główne funkcje
 
