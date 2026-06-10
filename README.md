@@ -1,148 +1,98 @@
 # VisualDB Studio
 
-**VisualDB Studio** to nowoczesny, wizualny kreator schematów baz danych PostgreSQL.
-Aplikacja pozwala projektować bazę danych za pomocą intuicyjnego canvasu, tabel w formie pudełek, relacji między kolumnami oraz automatycznego generatora SQL.
+VisualDB Studio to aplikacja webowa umożliwiająca wizualne projektowanie relacyjnych baz danych oraz generowanie gotowych skryptów SQL dla PostgreSQL.
 
-Projekt powstał jako portfolio project pokazujący umiejętności z zakresu baz danych, projektowania schematów, SQL, Reacta oraz tworzenia narzędzi developerskich.
+Projekt został stworzony jako narzędzie ułatwiające modelowanie schematów baz danych, tworzenie relacji między tabelami oraz szybkie przygotowywanie struktur wykorzystywanych w aplikacjach webowych i systemach biznesowych.
 
-## Live demo
+## Demo
 
-[Strona projektu](https://dataflow.bolt.host/)
+https://dataflow.bolt.host/
 
-## Główne funkcje
+## Najważniejsze funkcjonalności
 
-* wizualny canvas do projektowania schematu bazy danych,
-* dodawanie i edycja tabel,
-* konfiguracja kolumn przez formularz,
-* obsługa typów danych PostgreSQL,
-* checkboxy dla `PK`, `FK`, `NOT NULL`, `UNIQUE`, `INDEX`,
-* inteligentne generowanie struktury tabeli na podstawie jej nazwy,
-* automatyczne wykrywanie relacji typu `user_id → users.id`,
-* szybkie tworzenie powiązanych tabel,
-* generowanie kodu SQL `CREATE TABLE`,
-* generowanie indeksów dla wybranych kolumn,
-* walidacja schematu bazy danych,
-* panel sugestii ulepszeń,
-* opis bazy danych w języku naturalnym,
-* gotowe szablony baz danych,
-* import i eksport projektu do JSON,
-* automatyczny zapis projektu w localStorage,
-* ciemny, nowoczesny interfejs.
+### Projektowanie schematu bazy danych
+
+* tworzenie tabel na wizualnym canvasie,
+* definiowanie kolumn i typów danych,
+* obsługa kluczy głównych (PK),
+* obsługa kluczy obcych (FK),
+* obsługa indeksów,
+* obsługa ograniczeń `NOT NULL` oraz `UNIQUE`,
+* definiowanie wartości domyślnych.
+
+### Wizualizacja relacji
+
+* tworzenie relacji pomiędzy tabelami,
+* wizualne połączenia między kolumnami,
+* podgląd zależności w formie diagramu ERD,
+* szybkie tworzenie tabel powiązanych.
+
+### Inteligentne wspomaganie projektowania
+
+* automatyczne generowanie typowych struktur tabel,
+* wykrywanie potencjalnych kluczy obcych,
+* sugestie dotyczące jakości schematu,
+* automatyczne propozycje indeksów,
+* generowanie opisu bazy danych.
+
+### Generowanie SQL
+
+VisualDB Studio generuje gotowe skrypty PostgreSQL obejmujące:
+
+* CREATE TABLE,
+* PRIMARY KEY,
+* FOREIGN KEY,
+* UNIQUE,
+* NOT NULL,
+* DEFAULT,
+* CREATE INDEX.
 
 ## Technologie
 
-Projekt został zbudowany z użyciem:
+Frontend:
 
 * React
 * TypeScript
 * Vite
 * Tailwind CSS
-* React Flow
+
+Zarządzanie stanem:
+
 * Zustand
+
+Canvas i wizualizacja:
+
+* React Flow
+
+Animacje:
+
 * Framer Motion
+
+Ikony:
+
 * Lucide React
 
-## Dla kogo jest ten projekt?
+## Uruchomienie projektu
 
-VisualDB Studio może być użyteczne dla:
-
-* osób uczących się projektowania baz danych,
-* początkujących programistów,
-* studentów,
-* osób tworzących szybkie prototypy aplikacji,
-* developerów chcących wygenerować początkowy schemat SQL,
-* osób przygotowujących diagram ERD w prosty, wizualny sposób.
-
-## Jak działa aplikacja?
-
-1. Użytkownik dodaje nową tabelę.
-2. W formularzu wpisuje nazwę tabeli i kolumny.
-3. Aplikacja może automatycznie zaproponować typowe kolumny.
-4. Użytkownik ustawia klucze główne, obce, indeksy i ograniczenia.
-5. Tabele pojawiają się na canvasie jako wizualne pudełka.
-6. Relacje pokazują połączenia między konkretnymi kolumnami.
-7. Aplikacja generuje gotowy SQL PostgreSQL.
-
-## Przykład wygenerowanego SQL
-
-```sql
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  name VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE orders (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL,
-  total_amount NUMERIC(10,2) NOT NULL,
-  status VARCHAR(50) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_orders_user_id_users_id
-    FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE CASCADE
-);
-
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-```
-
-## Inteligentne funkcje
-
-Aplikacja posiada prostą warstwę smart logic, która pomaga szybciej projektować schemat.
-
-Przykłady:
-
-* tabela `users` może automatycznie dostać kolumny `id`, `name`, `email`, `created_at`,
-* kolumna `email` automatycznie sugeruje `VARCHAR(255)` i `UNIQUE`,
-* kolumna `user_id` może zostać wykryta jako klucz obcy do `users.id`,
-* dla kolumn FK aplikacja sugeruje dodanie indeksu,
-* panel sugestii pokazuje problemy i możliwe ulepszenia schematu.
-
-## Opis bazy danych
-
-VisualDB Studio potrafi wygenerować opis zaprojektowanej bazy danych w języku naturalnym.
-Opis zawiera informacje o tabelach, relacjach, kluczach oraz ogólnym przeznaczeniu schematu.
-
-## Szablony
-
-Aplikacja zawiera gotowe szablony baz danych, między innymi:
-
-* sklep internetowy,
-* blog,
-* CRM,
-* system rezerwacji,
-* aplikacja SaaS,
-* magazyn.
-
-## Instalacja lokalna
-
-Sklonuj repozytorium:
+Pobranie repozytorium:
 
 ```bash
 git clone https://github.com/milekv/visualdb-studio.git
 ```
 
-Przejdź do folderu projektu:
-
-```bash
-cd visualdb-studio
-```
-
-Zainstaluj zależności:
+Instalacja zależności:
 
 ```bash
 npm install
 ```
 
-Uruchom projekt lokalnie:
+Uruchomienie środowiska developerskiego:
 
 ```bash
 npm run dev
 ```
 
-Zbuduj wersję produkcyjną:
+Budowa wersji produkcyjnej:
 
 ```bash
 npm run build
@@ -150,60 +100,38 @@ npm run build
 
 ## Struktura projektu
 
-```txt
-src/
-├── components/
-│   ├── Canvas/
-│   ├── TableNode/
-│   ├── TableModal/
-│   ├── PropertiesPanel/
-│   ├── SqlPreview/
-│   ├── ValidationPanel/
-│   ├── SmartSuggestionsPanel/
-│   ├── QuickRelationModal/
-│   ├── RelatedTableMenu/
-│   └── DatabaseDescriptionPanel/
-├── lib/
-│   ├── sqlGenerator.ts
-│   ├── schemaValidator.ts
-│   ├── tablePresets.ts
-│   ├── relationDetector.ts
-│   ├── smartSuggestions.ts
-│   └── descriptionParser.ts
-├── store/
-│   └── schemaStore.ts
-├── types/
-│   └── schema.ts
+```text
+src
+├── components
+├── lib
+├── store
+├── types
 └── App.tsx
 ```
 
-## Co pokazuje ten projekt?
+Najważniejsze moduły:
 
-Ten projekt pokazuje umiejętności z kilku obszarów:
+* sqlGenerator.ts
+* schemaValidator.ts
+* relationDetector.ts
+* smartSuggestions.ts
+* descriptionParser.ts
+* schemaScore.ts
 
-* projektowanie relacyjnych baz danych,
-* generowanie SQL,
-* modelowanie schematów,
-* obsługa relacji `PK/FK`,
-* praca z TypeScript,
-* budowa aplikacji React,
-* zarządzanie stanem aplikacji,
-* projektowanie intuicyjnego UI,
-* tworzenie narzędzi developerskich.
+## Kierunki dalszego rozwoju
 
-## Status projektu
+Planowane funkcjonalności:
 
-Projekt jest rozwijany jako aplikacja portfolio.
-Planowane dalsze funkcje:
-
-* eksport do MySQL i SQLite,
-* bardziej zaawansowany parser opisu bazy,
-* import istniejącego SQL i generowanie diagramu,
-* dokładniejsza analiza jakości schematu,
+* import istniejących skryptów SQL,
+* generowanie diagramu na podstawie SQL,
+* obsługa MySQL,
+* obsługa SQLite,
+* eksport do PNG i PDF,
 * zapisywanie projektów w chmurze,
-* udostępnianie projektu linkiem.
+* współdzielenie projektów za pomocą linków.
 
 ## Autor
 
 Miłosz Kordziński
-GitHub: [@milekv](https://github.com/milekv)
+
+GitHub: https://github.com/milekv
