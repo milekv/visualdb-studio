@@ -186,22 +186,6 @@ Najważniejsze moduły:
 
 ---
 
-## 🔮 Plan rozwoju
-
-Planowane funkcjonalności:
-
-* import istniejących skryptów SQL,
-* generowanie diagramów z SQL,
-* obsługa MySQL,
-* obsługa SQLite,
-* eksport diagramów do PNG,
-* eksport do PDF,
-* zapis projektów w chmurze,
-* współdzielenie projektów linkiem,
-* wersjonowanie schematów.
-
----
-
 ## 👨‍💻 Autor
 
 **Miłosz Kordziński**
