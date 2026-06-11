@@ -1,51 +1,77 @@
 <p align="center">
-  <img src="public/logo.png" width="800" alt="VisualDB Studio Logo" />
+  <img src="public/logo.png" width="700" alt="VisualDB Studio Logo" />
+</p>
+
+<h1 align="center">VisualDB Studio</h1>
+
+<p align="center">
+  Inteligentny wizualny kreator schematów baz danych dla PostgreSQL.
 </p>
 
 <p align="center">
-  Inteligentny kreator schematów baz danych dla PostgreSQL.
+  Projektuj bazy danych • Twórz relacje • Generuj SQL • Rozbudowuj schemat jednym kliknięciem
 </p>
-
-VisualDB Studio to aplikacja webowa umożliwiająca wizualne projektowanie relacyjnych baz danych oraz generowanie gotowych skryptów SQL dla PostgreSQL.
-
-Projekt został stworzony jako narzędzie ułatwiające modelowanie schematów baz danych, tworzenie relacji między tabelami oraz szybkie przygotowywanie struktur wykorzystywanych w aplikacjach webowych i systemach biznesowych.
 
 <p align="center">
   <a href="https://milekv.github.io/visualdb-studio/">
-    <img src="https://img.shields.io/badge/Przejdź_do_aplikacji-VisualDB_Studio-7c3aed?style=for-the-badge&logo=githubpages&logoColor=white">
+    <img src="https://img.shields.io/badge/🌐_Otwórz_aplikację-VisualDB_Studio-7c3aed?style=for-the-badge">
   </a>
 </p>
 
-## Najważniejsze funkcjonalności
+<p align="center">
 
-### Projektowanie schematu bazy danych
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square\&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square\&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-Latest-646CFF?style=flat-square\&logo=vite)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supported-4169E1?style=flat-square\&logo=postgresql)
 
-* tworzenie tabel na wizualnym canvasie,
+</p>
+
+---
+
+## 🚀 Czym jest VisualDB Studio?
+
+VisualDB Studio to nowoczesna aplikacja webowa umożliwiająca projektowanie relacyjnych baz danych w sposób wizualny.
+
+Zamiast ręcznie pisać dziesiątki instrukcji SQL, użytkownik tworzy tabele, relacje i zależności na interaktywnym diagramie. Aplikacja automatycznie generuje gotowy kod PostgreSQL oraz pomaga projektować poprawne i skalowalne schematy.
+
+Projekt został stworzony jako połączenie:
+
+* narzędzia do modelowania baz danych,
+* generatora SQL,
+* systemu inteligentnych sugestii,
+* edukacyjnego kreatora dla początkujących.
+
+---
+
+## ✨ Najważniejsze możliwości
+
+### 🎨 Wizualne projektowanie bazy
+
+* tworzenie tabel na interaktywnym canvasie,
+* przeciąganie i rozmieszczanie elementów,
 * definiowanie kolumn i typów danych,
-* obsługa kluczy głównych (PK),
-* obsługa kluczy obcych (FK),
-* obsługa indeksów,
-* obsługa ograniczeń `NOT NULL` oraz `UNIQUE`,
-* definiowanie wartości domyślnych.
+* obsługa PK, FK, UNIQUE, INDEX oraz NOT NULL,
+* automatyczne wykrywanie relacji.
 
-### Wizualizacja relacji
+### 🔗 Budowanie relacji
 
-* tworzenie relacji pomiędzy tabelami,
-* wizualne połączenia między kolumnami,
-* podgląd zależności w formie diagramu ERD,
-* szybkie tworzenie tabel powiązanych.
+* relacje między tabelami,
+* wizualne połączenia kolumna → kolumna,
+* szybkie tworzenie tabel powiązanych,
+* automatyczne tworzenie kluczy obcych.
 
-### Inteligentne wspomaganie projektowania
+### 🧠 Inteligentne wspomaganie
 
-* automatyczne generowanie typowych struktur tabel,
-* wykrywanie potencjalnych kluczy obcych,
-* sugestie dotyczące jakości schematu,
-* automatyczne propozycje indeksów,
-* generowanie opisu bazy danych.
+* generator schematu z opisu tekstowego,
+* automatyczne sugestie rozbudowy bazy,
+* wykrywanie potencjalnych problemów,
+* rekomendacje indeksów,
+* analiza jakości projektu.
 
-### Generowanie SQL
+### ⚡ Generowanie SQL
 
-VisualDB Studio generuje gotowe skrypty PostgreSQL obejmujące:
+VisualDB Studio automatycznie generuje:
 
 * CREATE TABLE,
 * PRIMARY KEY,
@@ -55,46 +81,76 @@ VisualDB Studio generuje gotowe skrypty PostgreSQL obejmujące:
 * DEFAULT,
 * CREATE INDEX.
 
-## Technologie
+---
 
-Frontend:
+## 📸 Zrzuty ekranu
+
+### Projektowanie schematu
+
+![Projektowanie schematu](assets/screenshots/01-builder.png)
+
+### Generator SQL
+
+![Generator SQL](assets/screenshots/02-sql-generator.png)
+
+### Rozbudowa schematu
+
+![Rozbudowa schematu](assets/screenshots/03-smart-expand.png)
+
+### Ocena jakości projektu
+
+![Schema Score](assets/screenshots/04-schema-score.png)
+
+---
+
+## 🛠️ Technologie
+
+### Frontend
 
 * React
 * TypeScript
 * Vite
 * Tailwind CSS
 
-Zarządzanie stanem:
+### Zarządzanie stanem
 
 * Zustand
 
-Canvas i wizualizacja:
+### Diagramy i Canvas
 
 * React Flow
 
-Animacje:
+### Animacje
 
 * Framer Motion
 
-Ikony:
+### Ikony
 
 * Lucide React
 
-## Uruchomienie projektu
+---
 
-Pobranie repozytorium:
+## 🚀 Uruchomienie lokalne
+
+Sklonuj repozytorium:
 
 ```bash
 git clone https://github.com/milekv/visualdb-studio.git
 ```
 
-Instalacja zależności:
+Przejdź do katalogu projektu:
+
+```bash
+cd visualdb-studio
+```
+
+Zainstaluj zależności:
 
 ```bash
 npm install
 ```
 
-Uruchomienie środowiska developerskiego:
+Uruchom aplikację:
 
 ```bash
 npm run dev
@@ -106,7 +162,9 @@ Budowa wersji produkcyjnej:
 npm run build
 ```
 
-## Struktura projektu
+---
+
+## 📂 Struktura projektu
 
 ```text
 src
@@ -126,20 +184,26 @@ Najważniejsze moduły:
 * descriptionParser.ts
 * schemaScore.ts
 
-## Kierunki dalszego rozwoju
+---
+
+## 🔮 Plan rozwoju
 
 Planowane funkcjonalności:
 
 * import istniejących skryptów SQL,
-* generowanie diagramu na podstawie SQL,
+* generowanie diagramów z SQL,
 * obsługa MySQL,
 * obsługa SQLite,
-* eksport do PNG i PDF,
-* zapisywanie projektów w chmurze,
-* współdzielenie projektów za pomocą linków.
+* eksport diagramów do PNG,
+* eksport do PDF,
+* zapis projektów w chmurze,
+* współdzielenie projektów linkiem,
+* wersjonowanie schematów.
 
-## Autor
+---
 
-Miłosz Kordziński
+## 👨‍💻 Autor
+
+**Miłosz Kordziński**
 
 GitHub: https://github.com/milekv
