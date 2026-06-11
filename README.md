@@ -12,7 +12,7 @@ Projekt został stworzony jako narzędzie ułatwiające modelowanie schematów b
 
 <p align="center">
   <a href="https://milekv.github.io/visualdb-studio/">
-    <img src="https://img.shields.io/badge/Live-Demo-success?style=for-the-badge">
+    <img src="https://img.shields.io/badge/Przejdź_do_aplikacji-VisualDB_Studio-7c3aed?style=for-the-badge&logo=githubpages&logoColor=white">
   </a>
 </p>
 
