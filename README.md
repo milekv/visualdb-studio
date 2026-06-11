@@ -1,4 +1,13 @@
 # VisualDB Studio
+<p align="center">
+  <img src="assets/logo.png" width="180" alt="VisualDB Studio Logo" />
+</p>
+
+<h1 align="center">VisualDB Studio</h1>
+
+<p align="center">
+  Inteligentny wizualny kreator schematów baz danych dla PostgreSQL.
+</p>
 
 VisualDB Studio to aplikacja webowa umożliwiająca wizualne projektowanie relacyjnych baz danych oraz generowanie gotowych skryptów SQL dla PostgreSQL.
 
