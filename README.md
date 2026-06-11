@@ -16,12 +16,10 @@
 </p>
 
 <p align="center">
-
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square\&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square\&logo=typescript)
-![Vite](https://img.shields.io/badge/Vite-Latest-646CFF?style=flat-square\&logo=vite)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supported-4169E1?style=flat-square\&logo=postgresql)
-
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript" />
+  <img src="https://img.shields.io/badge/Vite-Latest-646CFF?style=for-the-badge&logo=vite" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Supported-4169E1?style=for-the-badge&logo=postgresql" />
 </p>
 
 ---
