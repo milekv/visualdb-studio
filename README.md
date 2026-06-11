@@ -76,27 +76,58 @@ VisualDB Studio automatycznie generuje:
 * DEFAULT,
 * CREATE INDEX.
 
----
+## 📸 Zdjęcia projektu
 
-## 📸 Zrzuty ekranu
+### 🚀 Ekran startowy
 
-### Projektowanie schematu
+Pierwszy ekran aplikacji umożliwiający rozpoczęcie pracy poprzez kreator, generowanie bazy z opisu lub projektowanie ręczne.
 
-![Projektowanie schematu](assets/screenshots/01-builder.png)
-
-### Generator SQL
-
-![Generator SQL](assets/screenshots/02-sql-generator.png)
-
-### Rozbudowa schematu
-
-![Rozbudowa schematu](assets/screenshots/03-smart-expand.png)
-
-### Ocena jakości projektu
-
-![Schema Score](assets/screenshots/04-schema-score.png)
+<p align="center">
+  <img src="assets/screenshots/01-home.png" alt="VisualDB Studio Home" />
+</p>
 
 ---
+
+### 🎨 Projektowanie schematu
+
+Tworzenie tabel, definiowanie kolumn oraz budowanie relacji pomiędzy encjami na interaktywnym diagramie.
+
+<p align="center">
+  <img src="assets/screenshots/02-schema-builder.png" alt="Schema Builder" />
+</p>
+
+---
+
+### ✨ Inteligentna rozbudowa bazy
+
+VisualDB Studio analizuje istniejący schemat i proponuje logiczne rozszerzenia wraz z automatycznym tworzeniem relacji.
+
+<p align="center">
+  <img src="assets/screenshots/03-smart-expand.png" alt="Smart Expand" />
+</p>
+
+---
+
+### ⚡ Generator SQL
+
+Automatyczne generowanie gotowych skryptów PostgreSQL na podstawie zaprojektowanego schematu.
+
+<p align="center">
+  <img src="assets/screenshots/04-sqlgenerator.png" alt="SQL Generator" />
+</p>
+
+---
+
+### 📊 Ocena jakości schematu
+
+Analiza poprawności projektu wraz z rekomendacjami dotyczącymi indeksów, relacji i najlepszych praktyk projektowania baz danych.
+
+<p align="center">
+  <img src="assets/screenshots/05-schema-score.png" alt="Schema Score" />
+</p>
+
+---
+
 
 ## 🛠️ Technologie
 
