@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" width="600" alt="VisualDB Studio Logo" />
+  <img src="assets/logo.png" width="800" alt="VisualDB Studio Logo" />
 </p>
 
 <p align="center">
