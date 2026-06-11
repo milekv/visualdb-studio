@@ -10,9 +10,11 @@ VisualDB Studio to aplikacja webowa umożliwiająca wizualne projektowanie relac
 
 Projekt został stworzony jako narzędzie ułatwiające modelowanie schematów baz danych, tworzenie relacji między tabelami oraz szybkie przygotowywanie struktur wykorzystywanych w aplikacjach webowych i systemach biznesowych.
 
-## Demo
-
-https://dataflow.bolt.host/
+<p align="center">
+  <a href="https://milekv.github.io/visualdb-studio/">
+    <img src="https://img.shields.io/badge/Live-Demo-success?style=for-the-badge">
+  </a>
+</p>
 
 ## Najważniejsze funkcjonalności
 
