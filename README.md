@@ -1,9 +1,7 @@
 # VisualDB Studio
 <p align="center">
-  <img src="assets/logo.png" width="180" alt="VisualDB Studio Logo" />
+  <img src="assets/logo.png" width="350" alt="VisualDB Studio Logo" />
 </p>
-
-<h1 align="center">VisualDB Studio</h1>
 
 <p align="center">
   Inteligentny wizualny kreator schematów baz danych dla PostgreSQL.
