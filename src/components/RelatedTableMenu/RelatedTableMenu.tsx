@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, ShoppingCart, CreditCard, Package, MessageSquare, MapPin, FolderTree, Edit3, X, ChevronRight } from 'lucide-react';
+import { ShoppingCart, CreditCard, Package, MessageSquare, MapPin, FolderTree, Edit3, ChevronRight } from 'lucide-react';
 import { useSchemaStore, generateId } from '../../store/schemaStore';
 import { getTablePreset, createColumnsFromPresets, getUniversalPreset } from '../../lib/tablePresets';
 import type { Table, OnDeleteAction } from '../../types/schema';
@@ -79,7 +79,7 @@ const relatedTableOptions: RelatedTableOption[] = [
 ];
 
 export function RelatedTableMenu({ sourceTableId, position, onClose }: RelatedTableMenuProps) {
-  const { tables, addTable, addRelation, addColumn, updateColumn } = useSchemaStore();
+  const { tables, addTable, addRelation } = useSchemaStore();
   const [customTableName, setCustomTableName] = useState('');
   const [showCustom, setShowCustom] = useState(false);
 
@@ -96,7 +96,6 @@ export function RelatedTableMenu({ sourceTableId, position, onClose }: RelatedTa
 
     const columns = createColumnsFromPresets(preset);
 
-    const fkColumnName = `${sourceTable.name.slice(0, -1)}_id`.replace('ees_', 'e_').replace('users', 'user');
     const normalizedFkName = option.fkColumn;
 
     const existingFkCol = columns.find(c => c.name.toLowerCase() === normalizedFkName || c.name === 'user_id');

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Database, Table2, Link2, FileText, ArrowRight } from 'lucide-react';
+import { X, Table2, Link2, FileText } from 'lucide-react';
 import { useSchemaStore } from '../../store/schemaStore';
 import type { Table, Relation } from '../../types/schema';
 
@@ -27,7 +27,6 @@ export function DatabaseDescriptionPanel({ isOpen, onClose }: DatabaseDescriptio
     for (const table of tables) {
       const pkColumn = table.columns.find(c => c.isPrimaryKey);
       const fkColumns = table.columns.filter(c => c.isForeignKey);
-      const otherColumns = table.columns.filter(c => !c.isPrimaryKey && !c.isForeignKey);
 
       let tableDesc = `Tabela "${table.name}"`;
 
@@ -155,7 +154,6 @@ export function DatabaseDescriptionPanel({ isOpen, onClose }: DatabaseDescriptio
           <div className="space-y-2">
             <p className="text-xs text-slate-500 uppercase tracking-wider">Szczegóły tabel</p>
             {tables.map(table => {
-              const pkCol = table.columns.find(c => c.isPrimaryKey);
               const fkCols = table.columns.filter(c => c.isForeignKey);
 
               return (
@@ -171,7 +169,7 @@ export function DatabaseDescriptionPanel({ isOpen, onClose }: DatabaseDescriptio
                     </span>
                   </div>
                   <p className="text-xs text-slate-400">
-                    {getTablePurpose(table, tables)}
+                    {getTablePurpose(table)}
                   </p>
                   {fkCols.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
@@ -283,7 +281,7 @@ function getRelationDescription(
   return `"${sourceTable}.${sourceCol}" odwołuje się do "${targetTable}.${targetCol}" (${onDeletePolish[onDelete as keyof typeof onDeletePolish] || onDelete})`;
 }
 
-function getTablePurpose(table: Table, allTables: Table[]): string {
+function getTablePurpose(table: Table): string {
   const name = table.name.toLowerCase();
   const columns = table.columns;
 

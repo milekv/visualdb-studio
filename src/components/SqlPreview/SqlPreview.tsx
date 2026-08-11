@@ -88,10 +88,14 @@ export function SqlPreview({ isOpen, onClose }: SqlPreviewProps) {
                       {i + 1}
                     </span>
                     <span className="flex-1">
-                      {line.split(' ').map((word, j) => {
+                      {line.split(/(\s+)/).map((word, j) => {
+                        if (/^\s+$/.test(word)) {
+                          return word;
+                        }
                         // Highlight SQL keywords
                         const keywords = ['CREATE', 'TABLE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'NOT', 'NULL', 'UNIQUE', 'DEFAULT', 'CONSTRAINT', 'ON', 'DELETE', 'CASCADE', 'SET', 'RESTRICT', 'NO', 'ACTION', 'INDEX'];
-                        if (keywords.includes(word.toUpperCase())) {
+                        const comparableWord = word.replace(/[(),;]/g, '').toUpperCase();
+                        if (keywords.includes(comparableWord)) {
                           return (
                             <span key={j} className="text-blue-400">
                               {word}
@@ -100,7 +104,7 @@ export function SqlPreview({ isOpen, onClose }: SqlPreviewProps) {
                         }
                         // Highlight data types
                         const types = ['SERIAL', 'INTEGER', 'BIGINT', 'UUID', 'VARCHAR', 'TEXT', 'BOOLEAN', 'DATE', 'TIMESTAMP', 'NUMERIC', 'JSONB'];
-                        if (types.some(type => word.startsWith(type))) {
+                        if (types.some(type => comparableWord.startsWith(type))) {
                           return (
                             <span key={j} className="text-violet-400">
                               {word}
@@ -117,7 +121,6 @@ export function SqlPreview({ isOpen, onClose }: SqlPreviewProps) {
                         }
                         return <span key={j}>{word}</span>;
                       })}
-                      {' '}
                     </span>
                   </div>
                 ))}

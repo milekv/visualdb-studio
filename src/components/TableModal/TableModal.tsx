@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Key, Link2, Trash2, Sparkles, Wand2, Check } from 'lucide-react';
+import { X, Plus, Key, Link2, Trash2, Sparkles, Wand2 } from 'lucide-react';
 import type { Column, DataType, OnDeleteAction } from '../../types/schema';
 import { useSchemaStore, generateId } from '../../store/schemaStore';
 import { getTablePreset, getUniversalPreset, createColumnsFromPresets, getSmartColumnPreset } from '../../lib/tablePresets';

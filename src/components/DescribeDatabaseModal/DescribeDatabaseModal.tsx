@@ -40,8 +40,6 @@ export function DescribeDatabaseModal({ isOpen, onClose }: DescribeDatabaseModal
           const preset = getTablePreset(def.name) || [];
           const columns = createColumnsFromPresets(preset);
 
-          const maxX = idx * 320;
-
           tables.push({
             id: generateId(),
             name: def.name,
@@ -163,7 +161,7 @@ export function DescribeDatabaseModal({ isOpen, onClose }: DescribeDatabaseModal
           { name: 'items', preset: null },
         ];
 
-        genericTables.forEach((def, idx) => {
+        genericTables.forEach((def) => {
           tables.push({
             id: generateId(),
             name: def.name,
@@ -215,7 +213,6 @@ export function DescribeDatabaseModal({ isOpen, onClose }: DescribeDatabaseModal
               },
             };
 
-            const updatedColumns = [...sourceTable.columns, newFkColumn];
             const tableStore = useSchemaStore.getState();
             const storedTable = tableStore.tables.find(t => t.id === sourceTable.id);
             if (storedTable) {

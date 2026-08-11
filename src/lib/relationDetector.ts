@@ -1,4 +1,4 @@
-import type { Table, Column, OnDeleteAction } from '../types/schema';
+import type { Table, OnDeleteAction } from '../types/schema';
 
 export interface DetectedRelation {
   columnId: string;
@@ -12,7 +12,7 @@ export interface DetectedRelation {
   onDelete: OnDeleteAction;
 }
 
-const fkPatterns: Record<string, { tableName: string; columnName: string }> = {
+const fkPatterns: Record<string, { tableName: string | null; columnName: string }> = {
   'user_id': { tableName: 'users', columnName: 'id' },
   'customer_id': { tableName: 'customers', columnName: 'id' },
   'order_id': { tableName: 'orders', columnName: 'id' },
@@ -91,9 +91,6 @@ export function detectRelationForColumn(
   const pkColumn = targetTable.columns.find(c => c.isPrimaryKey);
   if (!pkColumn) return null;
 
-  const existingColumn = sourceTable.columns.find(c => c.id === '');
-  const hasExistingRelation = existingColumn?.isForeignKey;
-
   return {
     columnId: '',
     columnName,
@@ -103,11 +100,11 @@ export function detectRelationForColumn(
     targetTableName: targetTable.name,
     targetColumnName: pkColumn.name,
     confidence: targetTable ? 'high' : 'medium',
-    onDelete: getSuggestedOnDelete(sourceTable.name, targetTable.name),
+    onDelete: getSuggestedOnDelete(targetTable.name),
   };
 }
 
-function getSuggestedOnDelete(sourceTableName: string, targetTableName: string): OnDeleteAction {
+function getSuggestedOnDelete(targetTableName: string): OnDeleteAction {
   if (targetTableName === 'users' || targetTableName === 'customers' || targetTableName === 'guests') {
     return 'CASCADE';
   }
@@ -137,7 +134,7 @@ export function detectAllPotentialRelations(tables: Table[]): DetectedRelation[]
   return relations;
 }
 
-export function suggestOnDeleteForContext(columnName: string, tables: Table[]): OnDeleteAction {
+export function suggestOnDeleteForContext(columnName: string): OnDeleteAction {
   const normalized = columnName.toLowerCase();
 
   if (normalized.includes('user') || normalized.includes('customer') || normalized.includes('guest')) {

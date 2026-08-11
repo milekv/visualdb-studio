@@ -1,4 +1,4 @@
-import type { Table, Relation, Column } from '../types/schema';
+import type { Table, Relation } from '../types/schema';
 
 export interface ScoreCategory {
   name: string;
@@ -19,7 +19,6 @@ export interface SchemaScore {
 function checkNamingConventions(tables: Table[]): { score: number; issues: string[] } {
   let score = 0;
   const issues: string[] = [];
-  const maxScore = tables.length * 10;
 
   for (const table of tables) {
     const tableName = table.name.toLowerCase();
@@ -46,7 +45,6 @@ function checkNamingConventions(tables: Table[]): { score: number; issues: strin
 function checkPrimaryKeys(tables: Table[]): { score: number; issues: string[] } {
   let score = 0;
   const issues: string[] = [];
-  const maxScore = tables.length * 15;
 
   for (const table of tables) {
     const pkColumns = table.columns.filter(c => c.isPrimaryKey);
@@ -157,40 +155,6 @@ function checkDataTypes(tables: Table[]): { score: number; issues: string[] } {
         issues.push(`"${table.name}.${column.name}": rozważ dodanie wartości domyślnej dla boolean`);
       } else if (column.dataType === 'BOOLEAN' && column.defaultValue) {
         score += 2;
-      }
-    }
-  }
-
-  return { score, issues };
-}
-
-function checkIndexes(tables: Table[]): { score: number; issues: string[] } {
-  let score = 0;
-  const issues: string[] = [];
-
-  for (const table of tables) {
-    const indexCount = table.columns.filter(c => c.isIndex).length;
-
-    // PK columns should not have extra INDEX (they're already indexed)
-    const pkWithIndex = table.columns.filter(c => c.isPrimaryKey && c.isIndex);
-    if (pkWithIndex.length > 0) {
-      issues.push(`Tabela "${table.name}": INDEX na kluczu głównym jest zbędny`);
-    } else {
-      score += 5;
-    }
-
-    // Check for frequently searched columns without indexes
-    const searchableCols = table.columns.filter(c => {
-      const name = c.name.toLowerCase();
-      return (name.includes('name') || name.includes('title') || name.includes('slug') ||
-              name.includes('status') || name.includes('email')) && !c.isPrimaryKey;
-    });
-
-    for (const col of searchableCols) {
-      if (col.isIndex) {
-        score += 3;
-      } else {
-        issues.push(`"${table.name}.${col.name}": rozważ dodanie INDEX dla często wyszukiwanej kolumny`);
       }
     }
   }

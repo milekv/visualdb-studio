@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Key, Link2, Gem, Plus, MoreHorizontal, ChevronDown } from 'lucide-react';
+import { Key, Link2, Gem, Plus, MoreHorizontal } from 'lucide-react';
 import { Handle, Position } from '@xyflow/react';
 import { useSchemaStore } from '../../store/schemaStore';
 import type { Table } from '../../types/schema';

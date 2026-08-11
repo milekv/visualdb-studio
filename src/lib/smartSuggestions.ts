@@ -210,7 +210,6 @@ function getColumnSuggestions(
   }
 
   if (tables.length > 0) {
-    const ordersTable = tables.find(t => t.name === 'orders' || t.name === 'zamowienia');
     if (table.name === 'users' || table.name === 'uzytkownicy' || table.name === 'customers' || table.name === 'klienci') {
       const hasOrdersTable = tables.some(t => t.name === 'orders' || t.name === 'zamowienia');
       if (!hasOrdersTable) {
@@ -283,8 +282,6 @@ function getRelationSuggestions(
 
 export function parseDescriptionToTables(description: string): Array<{ name: string; type: string }> {
   const lowerDesc = description.toLowerCase();
-  const tables: Array<{ name: string; type: string }> = [];
-
   const patterns: Array<{ keywords: string[]; tableType: string }> = [
     { keywords: ['sklep', 'ecommerce', 'e-commerce', 'sklepu', 'produkt', 'zamowien', 'produktów'], tableType: 'ecommerce' },
     { keywords: ['blog', 'wpis', 'komentarz', 'artykul', 'artykulów'], tableType: 'blog' },

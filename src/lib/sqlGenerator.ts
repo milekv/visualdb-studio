@@ -26,9 +26,12 @@ function getColumnDefinition(col: Column): string {
 
   // DEFAULT
   if (col.defaultValue && col.dataType !== 'SERIAL') {
-    const defaultValue = col.dataType === 'TEXT' || col.dataType.startsWith('VARCHAR')
-      ? `'${col.defaultValue}'`
-      : col.defaultValue;
+    const rawDefault = col.defaultValue.trim();
+    const isTextType = col.dataType === 'TEXT' || col.dataType.startsWith('VARCHAR');
+    const isAlreadyQuoted = rawDefault.startsWith("'") && rawDefault.endsWith("'");
+    const defaultValue = isTextType && !isAlreadyQuoted
+      ? `'${rawDefault.replace(/'/g, "''")}'`
+      : rawDefault;
     parts.push(`DEFAULT ${defaultValue}`);
   }
 

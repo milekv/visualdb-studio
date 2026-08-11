@@ -1,4 +1,4 @@
-import { useCallback, useRef, useMemo, useState, useEffect } from 'react';
+import { useCallback, useRef, useMemo, useState, useEffect, type ComponentProps } from 'react';
 import {
   ReactFlow,
   Background,
@@ -37,7 +37,7 @@ function Canvas({ onAddTable, onOpenDescribe, onOpenTemplates, onConnectTable, o
 
   // Node types - memoized
   const nodeTypes = useMemo(() => ({
-    table: (props: any) => (
+    table: (props: ComponentProps<typeof TableNode>) => (
       <TableNode
         {...props}
         onConnectClicked={onConnectTable}
