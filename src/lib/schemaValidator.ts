@@ -71,7 +71,7 @@ export function validateSchema(tables: Table[], relations: Relation[]): Validati
           id: generateId(),
           tableId: table.id,
           columnId: col.id,
-          message: `Kolumna FK "${col.name}" w tabeli "${table.name}" nie ma indeksu — rozważ dodanie INDEX.`,
+          message: `Kolumna FK "${col.name}" w tabeli "${table.name}" nie ma indeksu - rozważ dodanie INDEX.`,
           type: 'warning',
         });
       }
