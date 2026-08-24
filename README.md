@@ -1,54 +1,52 @@
 # VisualDB Studio
 
-Wizualny projektant schematów PostgreSQL działający lokalnie w przeglądarce.
+A local-first visual PostgreSQL schema designer.
 
-[English version](README.en.md) | [Uruchom aplikację](https://milekv.github.io/visualdb-studio/)
+[Polska wersja](README.pl.md) | [Open the app](https://milekv.github.io/visualdb-studio/)
 
 [![CI](https://github.com/milekv/visualdb-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/milekv/visualdb-studio/actions/workflows/ci.yml)
 ![React](https://img.shields.io/badge/React-18-61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-![VisualDB Studio - kreator schematu](assets/screenshots/02-schema-builder.png)
+![VisualDB Studio schema builder](assets/screenshots/02-schema-builder.png)
 
-VisualDB Studio pozwala tworzyć tabele i relacje na interaktywnym diagramie, sprawdzać jakość projektu i wygenerować gotowy skrypt PostgreSQL. Projekt nie wymaga konta ani backendu. Schemat jest zapisywany w pamięci lokalnej przeglądarki.
+VisualDB Studio lets you design tables and relationships on an interactive canvas, review schema quality, and generate PostgreSQL DDL. It needs no account or backend. Projects stay in browser storage.
 
-## Szybki start
+## Quick start
 
-1. Otwórz [demo](https://milekv.github.io/visualdb-studio/).
-2. Wybierz szablon lub dodaj pierwszą tabelę ręcznie.
-3. Zdefiniuj kolumny, klucz główny i relacje.
-4. Uruchom walidację oraz ocenę schematu.
-5. Otwórz podgląd SQL i pobierz skrypt.
+1. Open the [live app](https://milekv.github.io/visualdb-studio/).
+2. Start from a template or add a table manually.
+3. Define columns, a primary key, and relationships.
+4. Run validation and review the schema score.
+5. Open SQL Preview and download the generated script.
 
-## Najważniejsze funkcje
+## What it includes
 
-- Interaktywny diagram tabel oparty na React Flow.
-- Kolumny PostgreSQL z PK, FK, UNIQUE, INDEX, NOT NULL i DEFAULT.
-- Relacje z obsługą `ON DELETE`.
-- Deterministyczne sugestie relacji na podstawie nazw kolumn.
-- Walidacja brakujących kluczy, duplikatów, typów FK i indeksów.
-- Punktacja schematu z konkretnymi zaleceniami.
-- Szablony oraz lokalny generator schematu z opisu.
-- Generator `CREATE TABLE`, constraintów i indeksów.
-- Eksport SQL i projektu.
-- Automatyczny zapis projektu w `localStorage`.
+- Interactive React Flow table canvas.
+- PostgreSQL columns with PK, FK, UNIQUE, INDEX, NOT NULL, and DEFAULT options.
+- Relationships with `ON DELETE` behavior.
+- Deterministic relationship suggestions based on column names.
+- Checks for missing keys, duplicate names, FK type mismatches, and missing indexes.
+- Schema scoring with concrete recommendations.
+- Templates and a local rule-based description parser.
+- `CREATE TABLE`, constraint, and index generation.
+- SQL and project export.
+- Automatic project persistence in `localStorage`.
 
-## Screenshoty
+## Real application screenshots
 
-| Start | Rozbudowa schematu |
+| Home | Schema expansion |
 | --- | --- |
-| ![Ekran startowy](assets/screenshots/01-home.png) | ![Rozbudowa schematu](assets/screenshots/03-smart-expand.png) |
+| ![Home](assets/screenshots/01-home.png) | ![Schema expansion](assets/screenshots/03-smart-expand.png) |
 
-| Generator SQL | Ocena jakości |
+| SQL generation | Schema score |
 | --- | --- |
-| ![Generator SQL](assets/screenshots/04-sqlgenerator.png) | ![Ocena schematu](assets/screenshots/05-schema-score.png) |
+| ![SQL generation](assets/screenshots/04-sqlgenerator.png) | ![Schema score](assets/screenshots/05-schema-score.png) |
 
-Wszystkie obrazy pochodzą z działającej aplikacji.
+## Local development
 
-## Uruchomienie lokalne
-
-Wymagany jest Node.js 22.
+Node.js 22 is recommended.
 
 ```bash
 git clone https://github.com/milekv/visualdb-studio.git
@@ -57,7 +55,7 @@ npm ci
 npm run dev
 ```
 
-Kontrola jakości:
+Quality checks:
 
 ```bash
 npm run lint
@@ -66,23 +64,23 @@ npm test
 npm run build
 ```
 
-## Architektura
+## Architecture
 
 ```text
-src/components   interfejs, canvas, modale i panele
-src/lib          generator SQL, walidacja, punktacja i sugestie
-src/store        stan projektu i lokalna persystencja Zustand
-src/types        model tabel, kolumn i relacji
+src/components   canvas, panels, and editing flows
+src/lib          SQL generation, validation, scoring, and suggestions
+src/store        Zustand project state and browser persistence
+src/types        tables, columns, and relationship model
 ```
 
-Cała logika projektowa działa po stronie klienta. Aplikacja nie wysyła schematu na serwer.
+All design logic runs in the browser. The app does not upload schema data.
 
-## Ograniczenia
+## Current limits
 
-- Generator SQL jest ukierunkowany na PostgreSQL.
-- Sugestie są regułowe i nie zastępują przeglądu projektu przez człowieka.
-- Projekt nie łączy się bezpośrednio z produkcyjną bazą danych.
+- SQL generation targets PostgreSQL.
+- Suggestions are deterministic heuristics and still require human review.
+- The app does not connect directly to a production database.
 
-## Licencja
+## License
 
-MIT. Szczegóły w pliku [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
