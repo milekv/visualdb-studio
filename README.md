@@ -16,7 +16,7 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 ## Quick start
 
 1. Open the [live app](https://milekv.github.io/visualdb-studio/).
-2. Describe a SaaS, commerce, or booking workflow in plain language, start from a template, or add a table manually.
+2. Describe a SaaS, commerce, or booking workflow naturally in English or Polish, or use the guided setup.
 3. Review the generated tables, foreign keys, indexes, defaults, and design assumptions.
 4. Refine columns and relationships, with undo and redo available for local edits.
 5. Run validation, review the schema score, and download the generated SQL.
@@ -30,6 +30,8 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 - Checks for missing keys, duplicate names, FK type mismatches, and missing indexes.
 - Schema scoring with concrete recommendations.
 - A local describe-to-schema planner for SaaS billing, commerce, and booking workflows.
+- A four-step guided setup for people who prefer concrete questions over a blank text box.
+- Optional commerce workflows for inventory, customer accounts, and shipping.
 - Explicit design assumptions instead of pretending that a heuristic is certain.
 - Undo and redo for schema edits.
 - `CREATE TABLE`, constraint, and index generation.
@@ -38,12 +40,12 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 
 ## Real application screenshots
 
-| Home | Schema expansion |
-| --- | --- |
+| Home                                    | Schema expansion                                            |
+| --------------------------------------- | ----------------------------------------------------------- |
 | ![Home](assets/screenshots/01-home.png) | ![Schema expansion](assets/screenshots/03-smart-expand.png) |
 
-| SQL generation | Schema score |
-| --- | --- |
+| SQL generation                                            | Schema score                                            |
+| --------------------------------------------------------- | ------------------------------------------------------- |
 | ![SQL generation](assets/screenshots/04-sqlgenerator.png) | ![Schema score](assets/screenshots/05-schema-score.png) |
 
 ## Local development

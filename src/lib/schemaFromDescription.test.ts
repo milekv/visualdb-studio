@@ -50,4 +50,23 @@ describe("schema from description", () => {
       ),
     ).toThrow();
   });
+
+  it("understands an informal Polish store description and adds requested workflows", () => {
+    const result = buildSchemaFromDescription(
+      "Chcę bazę, bo tworzę sklep z rowerami, klientami, płatnościami, magazynem, kontami i dostawą.",
+      { includeAuditColumns: true },
+    );
+
+    expect(result.tables.map((table) => table.name)).toEqual(
+      expect.arrayContaining([
+        "customers",
+        "products",
+        "orders",
+        "payments",
+        "inventory_movements",
+        "customer_accounts",
+        "shipments",
+      ]),
+    );
+  });
 });

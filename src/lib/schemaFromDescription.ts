@@ -565,6 +565,115 @@ export function buildSchemaFromDescription(
     });
   }
 
+  const addFeatureTable = (
+    name: string,
+    columns: ColumnDefinition[],
+    parentName: string,
+    foreignKeyName: string,
+  ) => {
+    if (tableByName.has(name)) return;
+    const parent = tableByName.get(parentName);
+    const parentId = parent?.columns.find((column) => column.isPrimaryKey);
+    if (!parent || !parentId) return;
+    const table: Table = {
+      id: nextId("table"),
+      name,
+      columns: [
+        {
+          id: nextId("column"),
+          name: "id",
+          dataType: "UUID",
+          isPrimaryKey: true,
+          isNotNull: true,
+          isUnique: false,
+          isIndex: false,
+          isForeignKey: false,
+          defaultValue: "gen_random_uuid()",
+        },
+        ...columns.map((column) => makeColumn(nextId("column"), column)),
+        ...(options.includeAuditColumns
+          ? auditColumns.map((column) => makeColumn(nextId("column"), column))
+          : []),
+      ],
+      position: {
+        x: 70 + (tables.length % 3) * 360,
+        y: 70 + Math.floor(tables.length / 3) * 330,
+      },
+    };
+    const foreignKey = makeColumn(nextId("column"), {
+      name: foreignKeyName,
+      dataType: parentId.dataType,
+      required: true,
+      indexed: true,
+    });
+    foreignKey.isForeignKey = true;
+    foreignKey.foreignKey = {
+      referencedTableId: parent.id,
+      referencedColumnId: parentId.id,
+      onDelete: "RESTRICT",
+    };
+    table.columns.splice(1, 0, foreignKey);
+    tables.push(table);
+    tableByName.set(name, table);
+    relations.push({
+      id: nextId("relation"),
+      sourceTableId: table.id,
+      sourceColumnId: foreignKey.id,
+      targetTableId: parent.id,
+      targetColumnId: parentId.id,
+      onDelete: "RESTRICT",
+    });
+  };
+
+  if (
+    /inventory|stock|warehouse|magazyn/.test(normalized) &&
+    tableByName.has("products")
+  ) {
+    addFeatureTable(
+      "inventory_movements",
+      [
+        { name: "quantity_change", dataType: "INTEGER", required: true },
+        { name: "reason", dataType: "VARCHAR(100)", required: true },
+      ],
+      "products",
+      "product_id",
+    );
+  }
+  if (
+    /shipping|shipment|delivery|wysył|dostaw/.test(normalized) &&
+    tableByName.has("orders")
+  ) {
+    addFeatureTable(
+      "shipments",
+      [
+        { name: "status", dataType: "VARCHAR(20)", required: true },
+        { name: "tracking_number", dataType: "VARCHAR(100)", unique: true },
+        { name: "shipped_at", dataType: "TIMESTAMP" },
+      ],
+      "orders",
+      "order_id",
+    );
+  }
+  if (
+    /account|login|kont|użytkown/.test(normalized) &&
+    tableByName.has("customers")
+  ) {
+    addFeatureTable(
+      "customer_accounts",
+      [
+        { name: "password_hash", dataType: "VARCHAR(255)", required: true },
+        {
+          name: "is_active",
+          dataType: "BOOLEAN",
+          required: true,
+          defaultValue: "true",
+        },
+      ],
+      "customers",
+      "customer_id",
+    );
+  }
+
   return {
     projectName: selected.blueprint.name,
     tables,
