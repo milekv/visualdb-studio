@@ -69,4 +69,25 @@ describe("schema from description", () => {
       ]),
     );
   });
+
+  it("does not mistake an automotive service company for an online store", () => {
+    const result = buildSchemaFromDescription(
+      "firma samochodowa która oferuje usługi z klientami produktami samochodami i cenami",
+      { includeAuditColumns: true },
+    );
+
+    expect(result.projectName).toBe("Automotive services");
+    expect(result.tables.map((table) => table.name)).toEqual(
+      expect.arrayContaining([
+        "customers",
+        "vehicles",
+        "services",
+        "service_orders",
+        "service_order_items",
+        "products",
+        "used_products",
+      ]),
+    );
+    expect(result.tables.map((table) => table.name)).not.toContain("orders");
+  });
 });

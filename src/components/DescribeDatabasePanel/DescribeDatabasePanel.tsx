@@ -22,6 +22,7 @@ type Mode = "describe" | "guided";
 type Domain = "commerce" | "saas" | "booking" | "custom";
 const examples = [
   "Sklep z rowerami, klientami, produktami, zamówieniami i płatnościami.",
+  "Firma samochodowa oferująca usługi klientom, obsługująca samochody, produkty i ceny.",
   "SaaS dla zespołów z organizacjami, członkami, planami i fakturami.",
   "System rezerwacji wizyt z klientami, terminami i płatnościami.",
 ];
@@ -514,7 +515,7 @@ function Understanding({ result }: { result: GeneratedSchema }) {
         </span>
       </div>
       <p className="mt-2 text-xs leading-5 text-slate-400">
-        A {result.projectName.toLowerCase()} with {result.summary}.
+        {result.projectName} with {result.summary}.
       </p>
       <div className="mt-3 divide-y divide-slate-800">
         {result.tables.map((table) => (

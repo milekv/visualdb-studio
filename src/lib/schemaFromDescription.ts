@@ -66,6 +66,145 @@ const auditColumns: ColumnDefinition[] = [
 
 const blueprints: Blueprint[] = [
   {
+    id: "automotive-services",
+    name: "Automotive services",
+    keywords: [
+      "samochod",
+      "motoryzac",
+      "warsztat",
+      "mechanik",
+      "automotive",
+      "vehicle service",
+      "car service",
+      "usług",
+    ],
+    assumptions: [
+      "A customer can register more than one vehicle.",
+      "Service orders preserve the price charged at the time of service.",
+      "Products used during a service are recorded separately.",
+    ],
+    tables: [
+      {
+        name: "customers",
+        columns: [
+          { name: "full_name", dataType: "VARCHAR(255)", required: true },
+          { name: "email", dataType: "VARCHAR(255)", unique: true },
+          { name: "phone", dataType: "VARCHAR(50)" },
+        ],
+      },
+      {
+        name: "vehicles",
+        columns: [
+          { name: "vin", dataType: "VARCHAR(50)", unique: true },
+          { name: "make", dataType: "VARCHAR(100)", required: true },
+          { name: "model", dataType: "VARCHAR(100)", required: true },
+          {
+            name: "registration_number",
+            dataType: "VARCHAR(50)",
+            unique: true,
+          },
+          { name: "production_year", dataType: "INTEGER" },
+        ],
+      },
+      {
+        name: "services",
+        columns: [
+          { name: "name", dataType: "VARCHAR(255)", required: true },
+          { name: "description", dataType: "TEXT" },
+          { name: "base_price_cents", dataType: "INTEGER", required: true },
+          {
+            name: "is_active",
+            dataType: "BOOLEAN",
+            required: true,
+            defaultValue: "true",
+          },
+        ],
+      },
+      {
+        name: "service_orders",
+        columns: [
+          { name: "status", dataType: "VARCHAR(20)", required: true },
+          { name: "scheduled_at", dataType: "TIMESTAMP" },
+          { name: "completed_at", dataType: "TIMESTAMP" },
+          { name: "total_cents", dataType: "INTEGER", required: true },
+          { name: "notes", dataType: "TEXT" },
+        ],
+      },
+      {
+        name: "service_order_items",
+        columns: [
+          { name: "quantity", dataType: "INTEGER", required: true },
+          { name: "unit_price_cents", dataType: "INTEGER", required: true },
+        ],
+      },
+      {
+        name: "products",
+        columns: [
+          { name: "sku", dataType: "VARCHAR(50)", unique: true },
+          { name: "name", dataType: "VARCHAR(255)", required: true },
+          { name: "price_cents", dataType: "INTEGER", required: true },
+          {
+            name: "stock",
+            dataType: "INTEGER",
+            required: true,
+            defaultValue: "0",
+          },
+        ],
+      },
+      {
+        name: "used_products",
+        columns: [
+          { name: "quantity", dataType: "INTEGER", required: true },
+          { name: "unit_price_cents", dataType: "INTEGER", required: true },
+        ],
+      },
+    ],
+    relations: [
+      {
+        source: "vehicles",
+        column: "customer_id",
+        target: "customers",
+        onDelete: "RESTRICT",
+      },
+      {
+        source: "service_orders",
+        column: "customer_id",
+        target: "customers",
+        onDelete: "RESTRICT",
+      },
+      {
+        source: "service_orders",
+        column: "vehicle_id",
+        target: "vehicles",
+        onDelete: "RESTRICT",
+      },
+      {
+        source: "service_order_items",
+        column: "service_order_id",
+        target: "service_orders",
+        onDelete: "CASCADE",
+      },
+      {
+        source: "service_order_items",
+        column: "service_id",
+        target: "services",
+        onDelete: "RESTRICT",
+      },
+      {
+        source: "used_products",
+        column: "service_order_id",
+        target: "service_orders",
+        onDelete: "CASCADE",
+      },
+      {
+        source: "used_products",
+        column: "product_id",
+        target: "products",
+        onDelete: "RESTRICT",
+      },
+    ],
+  },
+  {
     id: "saas-billing",
     name: "SaaS billing",
     keywords: [
@@ -455,9 +594,20 @@ const blueprints: Blueprint[] = [
 ];
 
 function scoreBlueprint(description: string, blueprint: Blueprint): number {
-  return blueprint.keywords.reduce(
+  const keywordScore = blueprint.keywords.reduce(
     (score, keyword) => score + (description.includes(keyword) ? 1 : 0),
     0,
+  );
+  const strongDomainMatch: Record<string, RegExp> = {
+    "automotive-services":
+      /samochod|motoryzac|warsztat|mechanik|automotive|vehicle service|car service/,
+    commerce: /sklep|store|shop|e-?commerce/,
+    "saas-billing":
+      /saas|subskrypc|subscription|organizac|organisation|organization/,
+    booking: /rezerw|booking|reservation|appointment|wizy|hotel/,
+  };
+  return (
+    keywordScore + (strongDomainMatch[blueprint.id]?.test(description) ? 3 : 0)
   );
 }
 
@@ -491,7 +641,7 @@ export function buildSchemaFromDescription(
     }))
     .sort((a, b) => b.score - a.score);
   const selected = ranked[0];
-  if (!selected || selected.score === 0) {
+  if (!selected || selected.score < 2) {
     throw new Error(
       "Add a little more context, for example the users, records and processes the database should support.",
     );
