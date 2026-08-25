@@ -11,6 +11,8 @@ interface SchemaState {
   relationMode: boolean;
   warnings: ValidationWarning[];
   projectName: string;
+  history: SchemaSnapshot[];
+  future: SchemaSnapshot[];
 
   // Table actions
   addTable: (table: Table) => void;
@@ -34,18 +36,33 @@ interface SchemaState {
 
   // Project actions
   setProjectName: (name: string) => void;
-  loadProject: (tables: Table[], relations: Relation[]) => void;
+  loadProject: (tables: Table[], relations: Relation[], projectName?: string) => void;
   clearProject: () => void;
+  undo: () => void;
+  redo: () => void;
 
   // Validation
   runValidation: () => void;
+}
+
+interface SchemaSnapshot {
+  tables: Table[];
+  relations: Relation[];
+  projectName: string;
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 11);
 
 export const useSchemaStore = create<SchemaState>()(
   persist(
-    (set, get) => ({
+    (set, get) => {
+      const snapshot = (): SchemaSnapshot => {
+        const state = get();
+        return { tables: state.tables, relations: state.relations, projectName: state.projectName };
+      };
+      const checkpoint = () => set((state) => ({ history: [...state.history.slice(-49), snapshot()], future: [] }));
+
+      return ({
       tables: [],
       relations: [],
       selectedTableId: null,
@@ -53,8 +70,11 @@ export const useSchemaStore = create<SchemaState>()(
       relationMode: false,
       warnings: [],
       projectName: 'Nowy projekt',
+      history: [],
+      future: [],
 
       addTable: (table) => {
+        checkpoint();
         set((state) => ({
           tables: [...state.tables, table],
         }));
@@ -62,6 +82,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       updateTable: (id, updates) => {
+        checkpoint();
         set((state) => ({
           tables: state.tables.map((t) => (t.id === id ? { ...t, ...updates } : t)),
         }));
@@ -69,6 +90,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       deleteTable: (id) => {
+        checkpoint();
         set((state) => ({
           tables: state.tables.filter((t) => t.id !== id),
           relations: state.relations.filter(
@@ -84,6 +106,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       addColumn: (tableId, column) => {
+        checkpoint();
         set((state) => ({
           tables: state.tables.map((t) =>
             t.id === tableId ? { ...t, columns: [...t.columns, column] } : t
@@ -93,6 +116,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       updateColumn: (tableId, columnId, updates) => {
+        checkpoint();
         set((state) => ({
           tables: state.tables.map((t) =>
             t.id === tableId
@@ -109,6 +133,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       deleteColumn: (tableId, columnId) => {
+        checkpoint();
         set((state) => ({
           tables: state.tables.map((t) =>
             t.id === tableId
@@ -125,6 +150,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       addRelation: (relation) => {
+        checkpoint();
         set((state) => ({
           relations: [...state.relations, relation],
         }));
@@ -132,6 +158,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       updateRelation: (id, updates) => {
+        checkpoint();
         set((state) => ({
           relations: state.relations.map((r) =>
             r.id === id ? { ...r, ...updates } : r
@@ -141,6 +168,7 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       deleteRelation: (id) => {
+        checkpoint();
         set((state) => ({
           relations: state.relations.filter((r) => r.id !== id),
           selectedRelationId: state.selectedRelationId === id ? null : state.selectedRelationId,
@@ -157,15 +185,18 @@ export const useSchemaStore = create<SchemaState>()(
       },
 
       setProjectName: (name) => {
+        checkpoint();
         set({ projectName: name });
       },
 
-      loadProject: (tables, relations) => {
-        set({ tables, relations, selectedTableId: null, selectedRelationId: null });
+      loadProject: (tables, relations, projectName) => {
+        checkpoint();
+        set((state) => ({ tables, relations, projectName: projectName ?? state.projectName, selectedTableId: null, selectedRelationId: null }));
         get().runValidation();
       },
 
       clearProject: () => {
+        checkpoint();
         set({
           tables: [],
           relations: [],
@@ -176,12 +207,41 @@ export const useSchemaStore = create<SchemaState>()(
         });
       },
 
+      undo: () => {
+        const { history } = get();
+        const previous = history[history.length - 1];
+        if (!previous) return;
+        set((state) => ({
+          ...previous,
+          history: state.history.slice(0, -1),
+          future: [snapshot(), ...state.future].slice(0, 50),
+          selectedTableId: null,
+          selectedRelationId: null,
+        }));
+        get().runValidation();
+      },
+
+      redo: () => {
+        const { future } = get();
+        const next = future[0];
+        if (!next) return;
+        set((state) => ({
+          ...next,
+          history: [...state.history.slice(-49), snapshot()],
+          future: state.future.slice(1),
+          selectedTableId: null,
+          selectedRelationId: null,
+        }));
+        get().runValidation();
+      },
+
       runValidation: () => {
         const { tables, relations } = get();
         const warnings = validateSchema(tables, relations);
         set({ warnings });
       },
-    }),
+      });
+    },
     {
       name: 'dataflow-storage',
       partialize: (state) => ({

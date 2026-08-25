@@ -221,6 +221,10 @@ export function calculateSchemaScore(tables: Table[], relations: Relation[]): Sc
     recommendations: types.issues,
   });
 
+  for (const category of categories) {
+    category.score = Math.min(category.score, category.maxScore);
+  }
+
   const total = categories.reduce((sum, cat) => sum + cat.score, 0);
   const maxTotal = categories.reduce((sum, cat) => sum + cat.maxScore, 0);
   const percentage = Math.round((total / maxTotal) * 100);

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { PlusCircle, GitBranch, AlertTriangle, Lightbulb, Sparkles, Link2, FileText, TrendingUp, Layers } from 'lucide-react';
+import { PlusCircle, GitBranch, AlertTriangle, Lightbulb, MessageSquareText, Link2, FileText, TrendingUp, Layers } from 'lucide-react';
 import { useSchemaStore } from '../../store/schemaStore';
 
 interface SidebarProps {
@@ -10,9 +10,10 @@ interface SidebarProps {
   onOpenDbDescription: () => void;
   onOpenSchemaScore: () => void;
   onOpenExpandDatabase: () => void;
+  isDescribeOpen: boolean;
 }
 
-export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpenDescribe, onOpenDbDescription, onOpenSchemaScore, onOpenExpandDatabase }: SidebarProps) {
+export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpenDescribe, onOpenDbDescription, onOpenSchemaScore, onOpenExpandDatabase, isDescribeOpen }: SidebarProps) {
   const { relationMode, toggleRelationMode, warnings, tables } = useSchemaStore();
 
   const errorCount = warnings.filter(w => w.type === 'error').length;
@@ -22,27 +23,27 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
     <motion.aside
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="w-64 bg-slate-900/80 border-r border-slate-700/50 flex flex-col p-4 backdrop-blur-sm"
+      className="hidden w-52 shrink-0 bg-[#0a1725] border-r border-slate-700/70 lg:flex flex-col p-3"
     >
       <div className="flex flex-col gap-2">
         <motion.button
           whileHover={{ scale: 1.01, x: 2 }}
           whileTap={{ scale: 0.99 }}
-          onClick={onAddTable}
-          className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600/20 to-violet-600/20 border border-blue-500/30 text-blue-300 hover:border-blue-500/50 hover:from-blue-600/30 hover:to-violet-600/30 transition-all"
+          onClick={onOpenDescribe}
+          className={`flex items-center gap-3 px-3 py-3 rounded-md border transition-all ${isDescribeOpen ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' : 'border-transparent text-slate-300 hover:bg-slate-800/70 hover:text-white'}`}
         >
-          <PlusCircle className="w-5 h-5" />
-          <span className="font-medium">Dodaj tabelę</span>
+          <MessageSquareText className="w-[18px] h-[18px]" />
+          <span className="text-sm font-medium">Describe database</span>
         </motion.button>
 
         <motion.button
           whileHover={{ scale: 1.01, x: 2 }}
           whileTap={{ scale: 0.99 }}
-          onClick={onOpenDescribe}
-          className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-amber-600/20 to-orange-600/20 border border-amber-500/30 text-amber-300 hover:border-amber-500/50 transition-all"
+          onClick={onAddTable}
+          className="flex items-center gap-3 px-3 py-3 rounded-md border border-transparent text-slate-300 hover:bg-slate-800/70 hover:text-white transition-all"
         >
-          <Sparkles className="w-5 h-5" />
-          <span className="font-medium">Opisz bazę</span>
+          <PlusCircle className="w-[18px] h-[18px]" />
+          <span className="text-sm font-medium">Add table</span>
         </motion.button>
 
         <motion.button
@@ -52,7 +53,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
           className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white transition-all"
         >
           <Lightbulb className="w-5 h-5" />
-          <span className="font-medium">Sugestie</span>
+          <span className="text-sm font-medium">Suggestions</span>
         </motion.button>
 
         {tables.length > 0 && (
@@ -65,7 +66,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-violet-600/20 to-blue-600/20 border border-violet-500/30 text-violet-300 hover:border-violet-500/50 transition-all"
           >
             <Layers className="w-5 h-5" />
-            <span className="font-medium">Rozbuduj bazę</span>
+            <span className="text-sm font-medium">Expand schema</span>
           </motion.button>
         )}
 
@@ -79,7 +80,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white transition-all"
           >
             <FileText className="w-5 h-5" />
-            <span className="font-medium">Opis bazy</span>
+            <span className="text-sm font-medium">Schema notes</span>
           </motion.button>
         )}
 
@@ -94,7 +95,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
           }`}
         >
           <GitBranch className="w-5 h-5" />
-          <span className="font-medium">Tryb relacji</span>
+          <span className="text-sm font-medium">Relation mode</span>
           {relationMode && (
             <motion.div
               initial={{ scale: 0 }}
@@ -114,7 +115,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white transition-all"
           >
             <Link2 className="w-5 h-5" />
-            <span className="font-medium">Szybka relacja</span>
+            <span className="text-sm font-medium">Quick relation</span>
           </motion.button>
         )}
 
@@ -125,7 +126,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
           className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white transition-all"
         >
           <AlertTriangle className="w-5 h-5" />
-          <span className="font-medium">Walidacja</span>
+          <span className="text-sm font-medium">Validate</span>
           {(errorCount > 0 || warningCount > 0) && (
             <div className="ml-auto flex gap-1">
               {errorCount > 0 && (
@@ -152,20 +153,20 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-emerald-600/20 to-teal-600/20 border border-emerald-500/30 text-emerald-300 hover:border-emerald-500/50 transition-all"
           >
             <TrendingUp className="w-5 h-5" />
-            <span className="font-medium">Ocena schematu</span>
+            <span className="text-sm font-medium">Schema score</span>
           </motion.button>
         )}
       </div>
 
       <div className="mt-6 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30">
         <p className="text-sm text-slate-400 leading-relaxed">
-          Dodaj tabelę, uzupełnij kolumny i połącz relacje.
+          Start with a description, then refine tables and relationships on the canvas.
         </p>
       </div>
 
       <div className="mt-auto pt-4 border-t border-slate-700/30">
         <p className="text-xs text-slate-500">
-          Kliknij tabelę, aby edytować jej właściwości.
+          Select a table to edit its columns and constraints.
         </p>
       </div>
     </motion.aside>

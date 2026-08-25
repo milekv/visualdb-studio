@@ -11,10 +11,11 @@ import { TemplatesModal } from './components/TemplatesModal/TemplatesModal';
 import { SmartSuggestionsPanel } from './components/SmartSuggestionsPanel/SmartSuggestionsPanel';
 import { QuickRelationModal } from './components/QuickRelationModal/QuickRelationModal';
 import { RelatedTableMenu } from './components/RelatedTableMenu/RelatedTableMenu';
-import { DescribeDatabaseModal } from './components/DescribeDatabaseModal/DescribeDatabaseModal';
+import { DescribeDatabasePanel } from './components/DescribeDatabasePanel/DescribeDatabasePanel';
 import { DatabaseDescriptionPanel } from './components/DatabaseDescriptionPanel/DatabaseDescriptionPanel';
 import { SchemaScorePanel } from './components/SchemaScorePanel/SchemaScorePanel';
 import { ExpandDatabaseModal } from './components/ExpandDatabaseModal/ExpandDatabaseModal';
+import { SchemaStatusBar } from './components/SchemaStatusBar/SchemaStatusBar';
 import { useSchemaStore } from './store/schemaStore';
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
   const [isValidationOpen, setIsValidationOpen] = useState(false);
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
-  const [isDescribeOpen, setIsDescribeOpen] = useState(false);
+  const [isDescribeOpen, setIsDescribeOpen] = useState(true);
   const [isDbDescriptionOpen, setIsDbDescriptionOpen] = useState(false);
   const [isSchemaScoreOpen, setIsSchemaScoreOpen] = useState(false);
   const [isExpandDatabaseOpen, setIsExpandDatabaseOpen] = useState(false);
@@ -69,15 +70,27 @@ function App() {
           onOpenDbDescription={() => setIsDbDescriptionOpen(!isDbDescriptionOpen)}
           onOpenSchemaScore={() => setIsSchemaScoreOpen(true)}
           onOpenExpandDatabase={() => setIsExpandDatabaseOpen(true)}
+          isDescribeOpen={isDescribeOpen}
         />
 
-        <Canvas
-          onAddTable={() => setIsTableModalOpen(true)}
-          onOpenDescribe={() => setIsDescribeOpen(true)}
-          onOpenTemplates={() => setIsTemplatesOpen(true)}
-          onConnectTable={handleConnectClicked}
-          onRelatedTable={handleRelatedTableClicked}
-        />
+        <AnimatePresence>
+          {isDescribeOpen && (
+            <DescribeDatabasePanel
+              isOpen={isDescribeOpen}
+              onClose={() => setIsDescribeOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+
+        <div className={`${isDescribeOpen ? 'hidden lg:flex' : 'flex'} min-w-0 flex-1`}>
+          <Canvas
+            onAddTable={() => setIsTableModalOpen(true)}
+            onOpenDescribe={() => setIsDescribeOpen(true)}
+            onOpenTemplates={() => setIsTemplatesOpen(true)}
+            onConnectTable={handleConnectClicked}
+            onRelatedTable={handleRelatedTableClicked}
+          />
+        </div>
 
         <AnimatePresence>
           {selectedTableId && <PropertiesPanel />}
@@ -93,6 +106,8 @@ function App() {
           onClose={() => setIsDbDescriptionOpen(false)}
         />
       </div>
+
+      <SchemaStatusBar />
 
       {/* Modals */}
       <TableModal
@@ -148,10 +163,6 @@ function App() {
         />
       )}
 
-      <DescribeDatabaseModal
-        isOpen={isDescribeOpen}
-        onClose={() => setIsDescribeOpen(false)}
-      />
     </div>
   );
 }

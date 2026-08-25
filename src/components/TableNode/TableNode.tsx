@@ -41,18 +41,14 @@ function TableNodeComponent({ data, selected, onConnectClicked, onRelatedTableCl
       exit={{ scale: 0.8, opacity: 0 }}
       whileHover={{ scale: 1.02 }}
       onClick={handleClick}
-      className={`min-w-[240px] rounded-xl overflow-hidden cursor-pointer transition-all ${
+      className={`min-w-[228px] overflow-hidden rounded-md border bg-[#101f30] cursor-pointer transition-all ${
         selected
-          ? 'ring-2 ring-blue-500/80 shadow-lg shadow-blue-500/20'
-          : 'shadow-lg shadow-black/20'
+          ? 'border-violet-400 ring-1 ring-violet-400/60 shadow-lg shadow-black/30'
+          : 'border-slate-600/80 shadow-md shadow-black/20'
       }`}
-      style={{
-        background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
-        backdropFilter: 'blur(8px)',
-      }}
     >
-      <div className="bg-gradient-to-r from-blue-600/80 to-violet-600/80 px-4 py-3 border-b border-slate-600/30 flex items-center justify-between">
-        <h3 className="font-semibold text-white tracking-wide">{table.name}</h3>
+      <div className={`px-3 py-2.5 border-b flex items-center justify-between ${selected ? 'border-violet-400/40 bg-violet-500/15' : 'border-slate-700 bg-[#13263a]'}`}>
+        <h3 className="font-mono text-[13px] font-semibold text-white">{table.name}</h3>
         <div className="relative">
           <button
             onClick={(e) => {
@@ -76,14 +72,14 @@ function TableNodeComponent({ data, selected, onConnectClicked, onRelatedTableCl
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 transition-colors"
               >
                 <Link2 className="w-4 h-4 text-blue-400" />
-                <span>+ Połącz</span>
+                <span>Connect</span>
               </button>
               <button
                 onClick={handleRelatedTableClick}
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-700/50 transition-colors"
               >
                 <Plus className="w-4 h-4 text-green-400" />
-                <span>+ Powiązana</span>
+                <span>Related table</span>
               </button>
             </motion.div>
           )}
@@ -94,7 +90,7 @@ function TableNodeComponent({ data, selected, onConnectClicked, onRelatedTableCl
         {table.columns.map((col) => (
           <div
             key={col.id}
-            className="group relative flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors text-sm"
+            className="group relative flex items-center justify-between px-2.5 py-1.5 hover:bg-slate-700/40 transition-colors text-xs"
           >
             {/* Target handle for PK columns to receive FK connections (left side) */}
             {col.isPrimaryKey && (
@@ -129,11 +125,11 @@ function TableNodeComponent({ data, selected, onConnectClicked, onRelatedTableCl
                 <Gem className="w-3 h-3 text-violet-400 shrink-0" />
               )}
 
-              <span className="text-slate-200 font-medium">{col.name}</span>
+              <span className="font-mono text-[11px] font-medium text-slate-200">{col.name}</span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-slate-400 text-xs">{col.dataType}</span>
+              <span className="font-mono text-[9px] text-slate-500">{col.dataType}</span>
               {/* Source handle for FK columns (right side) */}
               {col.isForeignKey && (
                 <Handle
@@ -157,7 +153,7 @@ function TableNodeComponent({ data, selected, onConnectClicked, onRelatedTableCl
 
       {relationMode && (
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-violet-600 text-white text-xs">
-          Tryb relacji
+          Relation mode
         </div>
       )}
     </motion.div>

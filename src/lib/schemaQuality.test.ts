@@ -68,4 +68,15 @@ describe('schema quality checks', () => {
     expect(score.percentage).toBeGreaterThan(0);
     expect(score.categories).toHaveLength(5);
   });
+
+  it('never reports a percentage above 100 for multi-table schemas', () => {
+    const tables = Array.from({ length: 8 }, (_, index) => ({
+      ...users,
+      id: `users-${index}`,
+      name: `users_${index}`,
+      columns: users.columns.map((column) => ({ ...column, id: `${column.id}-${index}` })),
+    }));
+
+    expect(calculateSchemaScore(tables, []).percentage).toBeLessThanOrEqual(100);
+  });
 });

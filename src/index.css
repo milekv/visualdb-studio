@@ -12,7 +12,6 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
-
 @layer components {
   /* Custom scrollbar */
   ::-webkit-scrollbar {
@@ -59,8 +58,8 @@
 }
 
 .react-flow__edge-path {
-  stroke: url(#gradient);
-  stroke-width: 2;
+  stroke: #38bdf8;
+  stroke-width: 1.5;
 }
 
 .react-flow__edge.animated .react-flow__edge-path {
@@ -94,12 +93,7 @@
   @apply !w-3 !h-3 !bg-blue-400 !border-2 !border-blue-300;
 }
 
-/* Glassmorphism effect */
+/* Shared panel surface */
 .glass {
   @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700/50;
-}
-
-/* Gradient text */
-.gradient-text {
-  @apply bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent;
 }

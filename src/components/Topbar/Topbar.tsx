@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Database, FileJson, Download, Upload, FileCode, Sparkles, Trash2 } from 'lucide-react';
+import { Check, Database, FileJson, Download, Upload, FileCode, Plus, Redo2, Trash2, Undo2 } from 'lucide-react';
 import { useSchemaStore } from '../../store/schemaStore';
 import { exportProject, downloadJSON, parseImport, readFileAsText } from '../../lib/exportUtils';
 import { useRef, useState } from 'react';
@@ -11,7 +11,7 @@ interface TopbarProps {
 }
 
 export function Topbar({ onNewProject, onOpenTemplates, onOpenSqlPreview }: TopbarProps) {
-  const { tables, relations, projectName, loadProject, clearProject } = useSchemaStore();
+  const { tables, relations, projectName, loadProject, clearProject, setProjectName, history, future, undo, redo } = useSchemaStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
@@ -51,52 +51,72 @@ export function Topbar({ onNewProject, onOpenTemplates, onOpenSqlPreview }: Topb
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="h-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-slate-700/50 flex items-center justify-between px-6 backdrop-blur-sm"
+      className="h-14 shrink-0 bg-[#091522] border-b border-slate-700/70 flex items-center justify-between px-4"
     >
-      <div className="flex items-center gap-3">
-        <motion.div
-          className="flex items-center gap-2"
-          whileHover={{ scale: 1.02 }}
-        >
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <Database className="w-5 h-5 text-white" />
+      <div className="flex min-w-0 items-center gap-5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md border border-cyan-500/40 bg-cyan-500/10">
+            <Database className="w-[18px] h-[18px] text-cyan-300" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+          <span className="text-[15px] font-semibold text-slate-100">
             VisualDB Studio
           </span>
-        </motion.div>
+        </div>
+        <div className="hidden h-5 w-px bg-slate-700 sm:block" />
+        <input
+          value={projectName}
+          onChange={(event) => setProjectName(event.target.value)}
+          aria-label="Project name"
+          className="hidden w-44 border-0 bg-transparent px-0 text-sm font-medium text-slate-200 ring-0 placeholder:text-slate-600 focus:ring-0 sm:block"
+        />
+        <span className="hidden items-center gap-1.5 text-[11px] text-slate-500 xl:flex">
+          <Check className="h-3.5 w-3.5 text-emerald-400" /> Autosaved locally
+        </span>
       </div>
 
-      <div className="flex items-center gap-2">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onNewProject}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          onClick={undo}
+          disabled={history.length === 0}
+          title="Undo"
+          className="hidden rounded-md p-2 text-slate-400 hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 md:block"
         >
-          <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-medium">Nowy projekt</span>
-        </motion.button>
+          <Undo2 className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={redo}
+          disabled={future.length === 0}
+          title="Redo"
+          className="hidden rounded-md p-2 text-slate-400 hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 md:block"
+        >
+          <Redo2 className="h-4 w-4" />
+        </button>
+        <div className="mx-1 hidden h-5 w-px bg-slate-700 md:block" />
+        <button
+          onClick={onNewProject}
+          className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white md:flex"
+        >
+          <Plus className="w-4 h-4" />
+          <span className="hidden text-xs font-medium xl:inline">New</span>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={onOpenTemplates}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+          className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white md:flex"
         >
           <FileCode className="w-4 h-4" />
-          <span className="text-sm font-medium">Szablony</span>
-        </motion.button>
+          <span className="hidden text-xs font-medium xl:inline">Templates</span>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+          className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white md:flex"
         >
           <Upload className="w-4 h-4" />
-          <span className="text-sm font-medium">Import JSON</span>
-        </motion.button>
+          <span className="hidden text-xs font-medium xl:inline">Import project</span>
+        </button>
         <input
           ref={fileInputRef}
           type="file"
@@ -105,35 +125,29 @@ export function Topbar({ onNewProject, onOpenTemplates, onOpenSqlPreview }: Topb
           className="hidden"
         />
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+          className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white md:flex"
         >
           <Download className="w-4 h-4" />
-          <span className="text-sm font-medium">Eksport JSON</span>
-        </motion.button>
+          <span className="hidden text-xs font-medium xl:inline">Export</span>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={() => setShowClearConfirm(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+          title="Clear project"
+          className="hidden rounded-md p-2 text-slate-500 transition hover:bg-red-500/10 hover:text-red-400 md:block"
         >
           <Trash2 className="w-4 h-4" />
-          <span className="text-sm font-medium">Wyczyść</span>
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           onClick={onOpenSqlPreview}
-          className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white font-medium shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow ml-2"
+          className="ml-1 flex items-center gap-2 rounded-md bg-cyan-500 px-3.5 py-2 text-xs font-semibold text-slate-950 transition hover:bg-cyan-400"
         >
           <FileJson className="w-4 h-4" />
-          <span>Generuj SQL</span>
-        </motion.button>
+          <span>SQL preview</span>
+        </button>
       </div>
 
       {/* Clear confirmation modal */}

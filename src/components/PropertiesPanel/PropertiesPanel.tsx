@@ -10,6 +10,9 @@ const DATA_TYPES: DataType[] = [
   'BIGINT',
   'UUID',
   'VARCHAR(255)',
+  'VARCHAR(100)',
+  'VARCHAR(50)',
+  'VARCHAR(20)',
   'TEXT',
   'BOOLEAN',
   'DATE',
@@ -71,7 +74,7 @@ export function PropertiesPanel() {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-slate-800/50">
-          <h3 className="font-semibold text-white">Edytuj tabelę</h3>
+          <h3 className="font-semibold text-white">Table properties</h3>
           <button
             onClick={handleClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
@@ -85,7 +88,7 @@ export function PropertiesPanel() {
           {/* Table name */}
           <div>
             <label className="block text-xs font-medium text-slate-400 mb-1.5">
-              Nazwa tabeli
+              Table name
             </label>
             <input
               type="text"
@@ -98,7 +101,7 @@ export function PropertiesPanel() {
           {/* Columns */}
           <div>
             <label className="block text-xs font-medium text-slate-400 mb-2">
-              Kolumny
+              Columns
             </label>
 
             <div className="space-y-2">
@@ -116,7 +119,7 @@ export function PropertiesPanel() {
                       type="text"
                       value={column.name}
                       onChange={(e) => updateColumn(selectedTable.id, column.id, { name: e.target.value })}
-                      placeholder="Nazwa..."
+                      placeholder="Column name..."
                       className="flex-1 px-2 py-1 rounded bg-slate-900 border border-slate-600 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500/50"
                     />
                     <select
@@ -232,7 +235,7 @@ export function PropertiesPanel() {
                           })}
                           className="px-2 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-xs focus:outline-none"
                         >
-                          <option value="">Tabela...</option>
+                          <option value="">Referenced table...</option>
                           {tables
                             .filter((t) => t.id !== selectedTable.id)
                             .map((t) => (
@@ -253,7 +256,7 @@ export function PropertiesPanel() {
                           className="px-2 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-xs focus:outline-none"
                           disabled={!column.foreignKey?.referencedTableId}
                         >
-                          <option value="">Kolumna...</option>
+                          <option value="">Referenced column...</option>
                           {tables
                             .find((t) => t.id === column.foreignKey?.referencedTableId)
                             ?.columns.map((c) => (
@@ -289,7 +292,7 @@ export function PropertiesPanel() {
               className="mt-2 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-dashed border-slate-600 text-slate-400 hover:text-white hover:border-slate-500 transition-colors"
             >
               <Plus className="w-4 h-4" />
-              <span className="text-sm">Dodaj kolumnę</span>
+              <span className="text-sm">Add column</span>
             </button>
           </div>
         </div>
@@ -303,7 +306,7 @@ export function PropertiesPanel() {
             }}
             className="w-full px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-colors"
           >
-            Usuń tabelę
+              Delete table
           </button>
         </div>
       </motion.aside>

@@ -9,17 +9,17 @@ A local-first visual PostgreSQL schema designer.
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-![VisualDB Studio schema builder](assets/screenshots/02-schema-builder.png)
+![VisualDB Studio describe-to-schema workflow](assets/screenshots/06-describe-to-schema.png)
 
 VisualDB Studio lets you design tables and relationships on an interactive canvas, review schema quality, and generate PostgreSQL DDL. It needs no account or backend. Projects stay in browser storage.
 
 ## Quick start
 
 1. Open the [live app](https://milekv.github.io/visualdb-studio/).
-2. Start from a template or add a table manually.
-3. Define columns, a primary key, and relationships.
-4. Run validation and review the schema score.
-5. Open SQL Preview and download the generated script.
+2. Describe a SaaS, commerce, or booking workflow in plain language, start from a template, or add a table manually.
+3. Review the generated tables, foreign keys, indexes, defaults, and design assumptions.
+4. Refine columns and relationships, with undo and redo available for local edits.
+5. Run validation, review the schema score, and download the generated SQL.
 
 ## What it includes
 
@@ -29,7 +29,9 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 - Deterministic relationship suggestions based on column names.
 - Checks for missing keys, duplicate names, FK type mismatches, and missing indexes.
 - Schema scoring with concrete recommendations.
-- Templates and a local rule-based description parser.
+- A local describe-to-schema planner for SaaS billing, commerce, and booking workflows.
+- Explicit design assumptions instead of pretending that a heuristic is certain.
+- Undo and redo for schema edits.
 - `CREATE TABLE`, constraint, and index generation.
 - SQL and project export.
 - Automatic project persistence in `localStorage`.
@@ -78,6 +80,7 @@ All design logic runs in the browser. The app does not upload schema data.
 ## Current limits
 
 - SQL generation targets PostgreSQL.
+- Description planning is deterministic, currently covers three workflow families, and asks for more context instead of returning a fake generic schema.
 - Suggestions are deterministic heuristics and still require human review.
 - The app does not connect directly to a production database.
 
