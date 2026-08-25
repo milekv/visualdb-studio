@@ -38,13 +38,13 @@ VisualDB Studio pozwala tworzyć tabele i relacje na interaktywnym diagramie, sp
 
 ## Screenshoty
 
-| Start                                             | Rozbudowa schematu                                            |
-| ------------------------------------------------- | ------------------------------------------------------------- |
-| ![Ekran startowy](assets/screenshots/01-home.png) | ![Rozbudowa schematu](assets/screenshots/03-smart-expand.png) |
+| Konfigurator bazy                                            | Diagram schematu                                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![Konfigurator bazy](assets/screenshots/01-guided-setup.png) | ![Diagram schematu](assets/screenshots/02-schema-canvas.png) |
 
-| Generator SQL                                            | Ocena jakości                                             |
-| -------------------------------------------------------- | --------------------------------------------------------- |
-| ![Generator SQL](assets/screenshots/04-sqlgenerator.png) | ![Ocena schematu](assets/screenshots/05-schema-score.png) |
+| Podgląd SQL                                           | Ocena jakości                                             |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| ![Podgląd SQL](assets/screenshots/03-sql-preview.png) | ![Ocena schematu](assets/screenshots/04-schema-score.png) |
 
 Wszystkie obrazy pochodzą z działającej aplikacji.
 

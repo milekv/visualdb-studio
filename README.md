@@ -39,13 +39,13 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 
 ## Real application screenshots
 
-| Home                                    | Schema expansion                                            |
-| --------------------------------------- | ----------------------------------------------------------- |
-| ![Home](assets/screenshots/01-home.png) | ![Schema expansion](assets/screenshots/03-smart-expand.png) |
+| Guided setup                                            | Schema canvas                                             |
+| ------------------------------------------------------- | --------------------------------------------------------- |
+| ![Guided setup](assets/screenshots/01-guided-setup.png) | ![Schema canvas](assets/screenshots/02-schema-canvas.png) |
 
-| SQL generation                                            | Schema score                                            |
-| --------------------------------------------------------- | ------------------------------------------------------- |
-| ![SQL generation](assets/screenshots/04-sqlgenerator.png) | ![Schema score](assets/screenshots/05-schema-score.png) |
+| SQL preview                                           | Schema score                                            |
+| ----------------------------------------------------- | ------------------------------------------------------- |
+| ![SQL preview](assets/screenshots/03-sql-preview.png) | ![Schema score](assets/screenshots/04-schema-score.png) |
 
 ## Local development
 
