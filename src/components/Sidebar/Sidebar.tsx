@@ -1,6 +1,16 @@
-import { motion } from 'framer-motion';
-import { PlusCircle, GitBranch, AlertTriangle, Lightbulb, MessageSquareText, Link2, FileText, TrendingUp, Layers } from 'lucide-react';
-import { useSchemaStore } from '../../store/schemaStore';
+import { motion } from "framer-motion";
+import {
+  PlusCircle,
+  GitBranch,
+  AlertTriangle,
+  Lightbulb,
+  Database,
+  Link2,
+  FileText,
+  TrendingUp,
+  Layers,
+} from "lucide-react";
+import { useSchemaStore } from "../../store/schemaStore";
 
 interface SidebarProps {
   onAddTable: () => void;
@@ -13,11 +23,21 @@ interface SidebarProps {
   isDescribeOpen: boolean;
 }
 
-export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpenDescribe, onOpenDbDescription, onOpenSchemaScore, onOpenExpandDatabase, isDescribeOpen }: SidebarProps) {
-  const { relationMode, toggleRelationMode, warnings, tables } = useSchemaStore();
+export function Sidebar({
+  onAddTable,
+  onOpenValidation,
+  onOpenSuggestions,
+  onOpenDescribe,
+  onOpenDbDescription,
+  onOpenSchemaScore,
+  onOpenExpandDatabase,
+  isDescribeOpen,
+}: SidebarProps) {
+  const { relationMode, toggleRelationMode, warnings, tables } =
+    useSchemaStore();
 
-  const errorCount = warnings.filter(w => w.type === 'error').length;
-  const warningCount = warnings.filter(w => w.type === 'warning').length;
+  const errorCount = warnings.filter((w) => w.type === "error").length;
+  const warningCount = warnings.filter((w) => w.type === "warning").length;
 
   return (
     <motion.aside
@@ -30,10 +50,10 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
           whileHover={{ scale: 1.01, x: 2 }}
           whileTap={{ scale: 0.99 }}
           onClick={onOpenDescribe}
-          className={`flex items-center gap-3 px-3 py-3 rounded-md border transition-all ${isDescribeOpen ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300' : 'border-transparent text-slate-300 hover:bg-slate-800/70 hover:text-white'}`}
+          className={`flex items-center gap-3 px-3 py-3 rounded-md border transition-all ${isDescribeOpen ? "border-cyan-500/40 bg-cyan-500/10 text-cyan-300" : "border-transparent text-slate-300 hover:bg-slate-800/70 hover:text-white"}`}
         >
-          <MessageSquareText className="w-[18px] h-[18px]" />
-          <span className="text-sm font-medium">Describe database</span>
+          <Database className="w-[18px] h-[18px]" />
+          <span className="text-sm font-medium">Database setup</span>
         </motion.button>
 
         <motion.button
@@ -59,7 +79,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
         {tables.length > 0 && (
           <motion.button
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             whileHover={{ scale: 1.01, x: 2 }}
             whileTap={{ scale: 0.99 }}
             onClick={onOpenExpandDatabase}
@@ -73,7 +93,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
         {tables.length > 0 && (
           <motion.button
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             whileHover={{ scale: 1.01, x: 2 }}
             whileTap={{ scale: 0.99 }}
             onClick={onOpenDbDescription}
@@ -90,8 +110,8 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
           onClick={toggleRelationMode}
           className={`flex items-center gap-3 px-4 py-3 rounded-lg border transition-all ${
             relationMode
-              ? 'bg-violet-600/20 border-violet-500/50 text-violet-300'
-              : 'bg-slate-800/50 border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white'
+              ? "bg-violet-600/20 border-violet-500/50 text-violet-300"
+              : "bg-slate-800/50 border-slate-700/50 text-slate-300 hover:border-slate-600 hover:text-white"
           }`}
         >
           <GitBranch className="w-5 h-5" />
@@ -108,7 +128,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
         {tables.length >= 2 && (
           <motion.button
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             whileHover={{ scale: 1.01, x: 2 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => {}}
@@ -146,7 +166,7 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
         {tables.length > 0 && (
           <motion.button
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             whileHover={{ scale: 1.01, x: 2 }}
             whileTap={{ scale: 0.99 }}
             onClick={onOpenSchemaScore}
@@ -160,7 +180,8 @@ export function Sidebar({ onAddTable, onOpenValidation, onOpenSuggestions, onOpe
 
       <div className="mt-6 p-4 rounded-lg bg-slate-800/30 border border-slate-700/30">
         <p className="text-sm text-slate-400 leading-relaxed">
-          Start with a description, then refine tables and relationships on the canvas.
+          Use the guided setup, then refine tables and relationships on the
+          canvas.
         </p>
       </div>
 

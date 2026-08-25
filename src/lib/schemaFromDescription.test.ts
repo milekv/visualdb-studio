@@ -90,4 +90,32 @@ describe("schema from description", () => {
     );
     expect(result.tables.map((table) => table.name)).not.toContain("orders");
   });
+
+  it("turns guided capability choices into real schema structures", () => {
+    const result = buildSchemaFromDescription(
+      "automotive car service workshop. payments. inventory. user accounts. file attachments. notifications. comments. locations. tags. audit log.",
+      { includeAuditColumns: true, includeSoftDelete: true },
+    );
+    const names = result.tables.map((table) => table.name);
+
+    expect(names).toEqual(
+      expect.arrayContaining([
+        "payments",
+        "inventory_movements",
+        "customer_accounts",
+        "attachments",
+        "notifications",
+        "comments",
+        "locations",
+        "tags",
+        "audit_events",
+      ]),
+    );
+    expect(
+      result.tables.every((table) =>
+        table.columns.some((column) => column.name === "deleted_at"),
+      ),
+    ).toBe(true);
+    expect(validateSchema(result.tables, result.relations)).toEqual([]);
+  });
 });

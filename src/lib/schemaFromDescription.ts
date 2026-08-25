@@ -8,6 +8,7 @@ import type {
 
 export interface DescriptionOptions {
   includeAuditColumns: boolean;
+  includeSoftDelete?: boolean;
 }
 
 export interface GeneratedSchema {
@@ -671,6 +672,15 @@ export function buildSchemaFromDescription(
       ...(options.includeAuditColumns
         ? auditColumns.map((column) => makeColumn(nextId("column"), column))
         : []),
+      ...(options.includeSoftDelete
+        ? [
+            makeColumn(nextId("column"), {
+              name: "deleted_at",
+              dataType: "TIMESTAMP",
+              indexed: true,
+            }),
+          ]
+        : []),
     ];
     const table: Table = {
       id: tableId,
@@ -744,6 +754,15 @@ export function buildSchemaFromDescription(
         ...(options.includeAuditColumns
           ? auditColumns.map((column) => makeColumn(nextId("column"), column))
           : []),
+        ...(options.includeSoftDelete
+          ? [
+              makeColumn(nextId("column"), {
+                name: "deleted_at",
+                dataType: "TIMESTAMP",
+                indexed: true,
+              }),
+            ]
+          : []),
       ],
       position: {
         x: 70 + (tables.length % 3) * 360,
@@ -775,6 +794,46 @@ export function buildSchemaFromDescription(
     });
   };
 
+  const addStandaloneTable = (name: string, columns: ColumnDefinition[]) => {
+    if (tableByName.has(name)) return;
+    const table: Table = {
+      id: nextId("table"),
+      name,
+      columns: [
+        {
+          id: nextId("column"),
+          name: "id",
+          dataType: "UUID",
+          isPrimaryKey: true,
+          isNotNull: true,
+          isUnique: false,
+          isIndex: false,
+          isForeignKey: false,
+          defaultValue: "gen_random_uuid()",
+        },
+        ...columns.map((column) => makeColumn(nextId("column"), column)),
+        ...(options.includeAuditColumns
+          ? auditColumns.map((column) => makeColumn(nextId("column"), column))
+          : []),
+        ...(options.includeSoftDelete
+          ? [
+              makeColumn(nextId("column"), {
+                name: "deleted_at",
+                dataType: "TIMESTAMP",
+                indexed: true,
+              }),
+            ]
+          : []),
+      ],
+      position: {
+        x: 70 + (tables.length % 3) * 360,
+        y: 70 + Math.floor(tables.length / 3) * 330,
+      },
+    };
+    tables.push(table);
+    tableByName.set(name, table);
+  };
+
   if (
     /inventory|stock|warehouse|magazyn/.test(normalized) &&
     tableByName.has("products")
@@ -804,10 +863,12 @@ export function buildSchemaFromDescription(
       "order_id",
     );
   }
-  if (
-    /account|login|kont|użytkown/.test(normalized) &&
-    tableByName.has("customers")
-  ) {
+  const personTable = tableByName.has("customers")
+    ? "customers"
+    : tableByName.has("members")
+      ? "members"
+      : null;
+  if (/account|login|kont|użytkown/.test(normalized) && personTable) {
     addFeatureTable(
       "customer_accounts",
       [
@@ -819,9 +880,99 @@ export function buildSchemaFromDescription(
           defaultValue: "true",
         },
       ],
-      "customers",
-      "customer_id",
+      personTable,
+      personTable === "customers" ? "customer_id" : "member_id",
     );
+  }
+  const transactionTable = [
+    "service_orders",
+    "orders",
+    "bookings",
+    "subscriptions",
+  ].find((name) => tableByName.has(name));
+  if (
+    /payment|płatno/.test(normalized) &&
+    transactionTable &&
+    !tableByName.has("payments")
+  ) {
+    addFeatureTable(
+      "payments",
+      [
+        { name: "status", dataType: "VARCHAR(20)", required: true },
+        { name: "amount_cents", dataType: "INTEGER", required: true },
+        { name: "provider_reference", dataType: "VARCHAR(255)", unique: true },
+        { name: "paid_at", dataType: "TIMESTAMP" },
+      ],
+      transactionTable,
+      `${transactionTable.replace(/s$/, "")}_id`,
+    );
+  }
+  if (/file|attachment|załącz|dokument/.test(normalized) && transactionTable) {
+    addFeatureTable(
+      "attachments",
+      [
+        { name: "file_name", dataType: "VARCHAR(255)", required: true },
+        { name: "mime_type", dataType: "VARCHAR(100)", required: true },
+        {
+          name: "storage_key",
+          dataType: "VARCHAR(255)",
+          required: true,
+          unique: true,
+        },
+      ],
+      transactionTable,
+      `${transactionTable.replace(/s$/, "")}_id`,
+    );
+  }
+  if (/comment|note|komentar|notatk/.test(normalized) && transactionTable) {
+    addFeatureTable(
+      "comments",
+      [
+        { name: "body", dataType: "TEXT", required: true },
+        { name: "author_name", dataType: "VARCHAR(255)" },
+      ],
+      transactionTable,
+      `${transactionTable.replace(/s$/, "")}_id`,
+    );
+  }
+  if (/notification|powiadom/.test(normalized) && personTable) {
+    addFeatureTable(
+      "notifications",
+      [
+        { name: "channel", dataType: "VARCHAR(20)", required: true },
+        { name: "subject", dataType: "VARCHAR(255)", required: true },
+        { name: "sent_at", dataType: "TIMESTAMP" },
+      ],
+      personTable,
+      personTable === "customers" ? "customer_id" : "member_id",
+    );
+  }
+  if (/location|oddział|lokalizac/.test(normalized)) {
+    addStandaloneTable("locations", [
+      { name: "name", dataType: "VARCHAR(255)", required: true },
+      { name: "address", dataType: "TEXT" },
+      {
+        name: "is_active",
+        dataType: "BOOLEAN",
+        required: true,
+        defaultValue: "true",
+      },
+    ]);
+  }
+  if (/tag|etykiet/.test(normalized)) {
+    addStandaloneTable("tags", [
+      { name: "name", dataType: "VARCHAR(100)", required: true, unique: true },
+      { name: "color", dataType: "VARCHAR(20)" },
+    ]);
+  }
+  if (/audit log|audit trail|dziennik zmian/.test(normalized)) {
+    addStandaloneTable("audit_events", [
+      { name: "actor_id", dataType: "UUID", indexed: true },
+      { name: "action", dataType: "VARCHAR(100)", required: true },
+      { name: "entity_type", dataType: "VARCHAR(100)", required: true },
+      { name: "entity_id", dataType: "UUID", indexed: true },
+      { name: "changes", dataType: "JSONB" },
+    ]);
   }
 
   return {

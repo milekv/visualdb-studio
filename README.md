@@ -9,15 +9,15 @@ A local-first visual PostgreSQL schema designer.
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-![VisualDB Studio describe-to-schema workflow](assets/screenshots/06-describe-to-schema.png)
+![VisualDB Studio guided database setup](assets/screenshots/06-guided-setup.png)
 
 VisualDB Studio lets you design tables and relationships on an interactive canvas, review schema quality, and generate PostgreSQL DDL. It needs no account or backend. Projects stay in browser storage.
 
 ## Quick start
 
 1. Open the [live app](https://milekv.github.io/visualdb-studio/).
-2. Describe a SaaS, commerce, or booking workflow naturally in English or Polish, or use the guided setup.
-3. Review the generated tables, foreign keys, indexes, defaults, and design assumptions.
+2. Complete the guided setup: project, use case, core data, capabilities, rules, and review.
+3. Review the live table and relationship count before creating the schema.
 4. Refine columns and relationships, with undo and redo available for local edits.
 5. Run validation, review the schema score, and download the generated SQL.
 
@@ -29,10 +29,9 @@ VisualDB Studio lets you design tables and relationships on an interactive canva
 - Deterministic relationship suggestions based on column names.
 - Checks for missing keys, duplicate names, FK type mismatches, and missing indexes.
 - Schema scoring with concrete recommendations.
-- A local describe-to-schema planner for SaaS billing, commerce, and booking workflows.
-- A four-step guided setup for people who prefer concrete questions over a blank text box.
-- Optional commerce workflows for inventory, customer accounts, and shipping.
-- Explicit design assumptions instead of pretending that a heuristic is certain.
+- A six-step guided setup for commerce, automotive services, SaaS billing, and booking systems.
+- Optional payments, inventory, shipping, accounts, attachments, notifications, comments, locations, tags, and audit events.
+- Configurable audit timestamps and soft delete columns.
 - Undo and redo for schema edits.
 - `CREATE TABLE`, constraint, and index generation.
 - SQL and project export.
@@ -82,7 +81,7 @@ All design logic runs in the browser. The app does not upload schema data.
 ## Current limits
 
 - SQL generation targets PostgreSQL.
-- Description planning is deterministic, currently covers three workflow families, and asks for more context instead of returning a fake generic schema.
+- Guided generation currently covers four reviewed workflow families.
 - Suggestions are deterministic heuristics and still require human review.
 - The app does not connect directly to a production database.
 
